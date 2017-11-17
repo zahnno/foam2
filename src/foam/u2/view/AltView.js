@@ -70,7 +70,7 @@ foam.CLASS({
       this.altStack = this.Stack.create();
       this.viewChoices$.sub(this.changeView);
 
-      this.addClass(this.myClass())  
+      this.addClass(this.myClass())
       this.startContext({data: this})
         this.start()
           .add(this.VIEW_CHOICES)
@@ -91,6 +91,6 @@ foam.CLASS({
   listeners: [
     function changeView(){
       this.altStack.push(this.viewChoices);
-    },
+    }
   ]
 });
