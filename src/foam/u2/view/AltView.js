@@ -7,13 +7,7 @@
  * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+*/
 
 foam.CLASS({
   package: 'foam.u2.view',
@@ -76,7 +70,7 @@ foam.CLASS({
       this.altStack = this.Stack.create();
       this.viewChoices$.sub(this.changeView);
 
-      this.addClass(this.myClass())
+      this.addClass(this.myClass())  
       this.startContext({data: this})
         this.start()
           .add(this.VIEW_CHOICES)
@@ -86,20 +80,17 @@ foam.CLASS({
         .tag({class: 'foam.u2.stack.StackView', data: this.altStack, showActions: false})
       .end()
 
-      if(!this.views[0]){
-        this.views.push([ { class: 'foam.u2.view.TableView' , data: this.data }, 'Table' ]);        
-      } else {
-        this.views.forEach(function(view){
-          view[0].data ? view[0].data : self.data;
-        });
-        this.altStack.push(this.views[0][0]);
-      }
+      this.views.forEach(function(view){
+        view[0].data = view[0].data ? view[0].data : self.data;
+      })
+      this.altStack.push(this.views[0][0]);
+    
     }
   ],
 
   listeners: [
     function changeView(){
       this.altStack.push(this.viewChoices);
-    }
+    },
   ]
 });
