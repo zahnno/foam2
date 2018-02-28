@@ -4,7 +4,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
- foam.CLASS({
+foam.CLASS({
   package: 'foam.u2.view',
   name: 'ScrollTableView',
   extends: 'foam.u2.Element',
@@ -14,6 +14,14 @@
     'foam.graphics.ScrollCView',
     'foam.mlang.sink.Count',
     'foam.u2.view.TableView'
+  ],
+  
+  exports: [
+    'selection'
+  ],
+
+  imports: [
+    'selection? as importSelection'
   ],
 
   properties: [
@@ -59,7 +67,7 @@
         start('tr').
           start('td').
             style({ 'vertical-align': 'top' }).
-            start(this.TableView, {data$: this.scrolledDao$, columns: this.columns, selection$: this.selection$}).
+            start(this.TableView, {data$: this.scrolledDao$, columns: this.columns}).
             end().
           end().
           start('td').style({ 'vertical-align': 'top' }).
