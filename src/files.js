@@ -152,6 +152,8 @@ FOAM_FILES([
   { name: "foam/u2/ElementJava", flags: ['java'] },
   { name: "foam/u2/RowFormatter" },
 //  { name: "foam/u2/AttrSlot", flags: ['web'] },
+  { name: "foam/gui/SummaryCard", flags: ['web'] },
+  { name: "foam/gui/SummaryView", flags: ['web'] },
   { name: "foam/u2/WeakMap", flags: ['web'] },
   { name: "foam/u2/Element", flags: ['js'] },
   { name: "foam/u2/MNRowFormatter", flags: ['web'] },
