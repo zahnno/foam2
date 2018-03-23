@@ -48,7 +48,7 @@ foam.CLASS({
           dao: this.supportEmailDAO,
           summaryView: this.EmailSupportTableView,
           createLabel: 'New Email' ,
-          showActions:true
+          showActions: false
       })
     }
   ]
