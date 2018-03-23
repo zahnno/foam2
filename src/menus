@@ -36,4 +36,7 @@ p({"class":"foam.nanos.menu.Menu","id":"support-email","label":"Support Email","
 // p({"class":"foam.nanos.menu.Menu","id":"demo","label":"Demo1","order":1000,"parent":"demos","handler":{"class":"foam.nanos.menu.ViewMenu","view":{"class":"foam.nanos.demo.Demo"}}})
 // p({"class":"foam.nanos.menu.Menu","id":"relationshipDemo","label":"Relationship Demo","order":1000,"parent":"demos","handler":{"class":"foam.nanos.menu.ViewMenu","view":{"class":"foam.nanos.demo.relationship.Controller"}}})
 p({"class":"foam.nanos.menu.Menu","id":"emailSupport","label":"Email Support","handler":{"class":"foam.nanos.menu.ViewMenu", "view": {"class":"foam.support.view.EmailTableView"}},"order":1000,"parent":"admin"})
+<<<<<<< HEAD
 >>>>>>> cf95f5cf51715a1e84de531329025527721c05b6
+=======
+>>>>>>> cf55af6ab497ae5b4aae8be6c9ab49e3e66f020a

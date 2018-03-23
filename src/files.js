@@ -501,6 +501,7 @@ FOAM_FILES([
   { name: "foam/crypto/sign/SignedFObject" },
 
   //Support
+<<<<<<< HEAD
   { name: "foam/support/model/SupportEmail" },
   { name: "foam/support/modal/NewEmailSupportModal"},
   { name: "foam/support/modal/NewEmailSupportConfirmationModal"},
@@ -509,7 +510,14 @@ FOAM_FILES([
   { name: "foam/support/model/Ticket" },
   { name: "foam/support/view/TicketView"},
   { name: "foam/support/model/TicketMessage" },
+=======
+  { name: "foam/support/model/TicketMessage" },
+  { name: "foam/support/model/Ticket" },
+  { name: "foam/support/view/TicketView" },
+  { name: "foam/support/model/SupportEmail" },
+>>>>>>> cf55af6ab497ae5b4aae8be6c9ab49e3e66f020a
   { name: "foam/support/view/TicketDetailView" },
   { name: "foam/support/view/CreateTicketView" },
+  { name: "foam/support/view/TicketSummaryView" },
   { name: "foam/support/view/EmailTableView" }
 ]);
