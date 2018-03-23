@@ -104,6 +104,7 @@ foam.CLASS({
       .end()
   }
 ],
+
   actions: [
     {
       name: 'newEmail',
@@ -127,16 +128,16 @@ foam.CLASS({
         'selection'
       ],
       
-      methods: [
-        function initE() {
-          this
-            .start({
-              selection$: this.selection$,
-              class: 'foam.u2.view.ScrollTableView',
-              data: this.supportEmailDAO,
-            }).addClass(this.myClass('table')).end();
-        }
-      ] 
-    }
-  ]
-});
+  methods: [
+      function initE() {
+        this
+          .start({
+            selection$: this.selection$,
+            class: 'foam.u2.view.ScrollTableView',
+            data: this.supportEmailDAO,
+          }).addClass(this.myClass('table')).end();
+          }
+        ] 
+      }
+    ]
+  });
