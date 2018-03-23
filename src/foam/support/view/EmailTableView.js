@@ -102,8 +102,8 @@ foam.CLASS({
           .start(this.NEW_EMAIL).end()
         .end()
       .end()
-  }
-],
+    }
+  ],
 
   actions: [
     {
