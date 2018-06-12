@@ -32,17 +32,6 @@ foam.CLASS({
     ^ .foam-u2-UnstyledActionView-create {
       display: none;
     }
-    ^ .foam-u2-UnstyledActionView-newEmail{
-      width: 135px;
-      height: 40px;
-      border-radius: 2px;
-      border: none;
-      background-color: #59a5d5;
-      text-align: center;
-      color: #ffffff;
-      position: relative;
-      margin: auto;
-    }
     ^ .btn-mid{
       width: 100%;
       text-align: center;
@@ -70,6 +59,9 @@ foam.CLASS({
     ^ th {
       font-weight: 400;
     }
+    ^ .blue-button{
+      margin: 20px;
+    }
   `,
 
   properties: [
@@ -80,7 +72,8 @@ foam.CLASS({
   ],
 
   messages: [
-    { name: 'Title', message: 'Support Email Management' }
+    { name: 'Title', message: 'Support Email Management' },
+    { name: 'EmptyDAOMessage', message: 'No Support Emails Connected' }
   ],
 
   methods: [
@@ -100,10 +93,10 @@ foam.CLASS({
         showActions: false
       }).hide(this.emptyDAO$).end()
       .start().show(this.emptyDAO$)
-        .start().add('No Support Emails Connected').end()
+        .start().add(this.EmptyDAOMessage).end()
       .end()
-      .start().addClass('btn-mid')
-        .start(this.NEW_EMAIL).end()
+      .start()
+        .start(this.NEW_EMAIL).addClass('blue-button').addClass('btn').end()
       .end()
     }
   ],

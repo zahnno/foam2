@@ -124,14 +124,14 @@ foam.CLASS({
       border-radius: 2px;
       cursor: pointer;
       text-align: center;
-      font-size: 14px;
+      font-size: 13px;
       line-height: 2.86;
     }
     .blue-button{
       background-color: #59a5d5;
       color: #ffffff;
       margin: 20px 20px;
-      float: right;
+      border: none;
     }
     .blue-button:hover{
       opacity: 0.9;
