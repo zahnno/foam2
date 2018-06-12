@@ -10,7 +10,16 @@ foam.CLASS({
 
   implements: [ 'foam.nanos.auth.EnabledAware' ],
 
-  imports: [ 'scriptDAO' ],
+  requires: [
+    'foam.nanos.script.ScriptStatus',
+    'foam.nanos.notification.notifications.ScriptRunNotification'
+  ],
+
+  imports: [ 
+    'notificationDAO',
+    'scriptDAO',
+    'user'
+  ],
 
   javaImports: [
     'bsh.EvalError',
@@ -25,11 +34,11 @@ foam.CLASS({
     'java.io.PrintStream',
     'java.util.Date',
     'java.util.List',
-    'static foam.mlang.MLang.*'
+    'static foam.mlang.MLang.*',
   ],
 
   tableColumns: [
-    'id', 'enabled', 'server', /*'language',*/ 'description', 'lastDuration', 'run'
+    'id', 'enabled', 'server', 'description', 'lastDuration', 'status', 'run'
   ],
 
   searchColumns: [],
@@ -51,12 +60,12 @@ foam.CLASS({
     {
       class: 'DateTime',
       name: 'lastRun',
-      visibility: foam.u2.Visibility.RO
+      visibility: 'RO'
     },
     {
       class: 'Long',
       name: 'lastDuration',
-      visibility: foam.u2.Visibility.RO
+      visibility: 'RO'
     },
     /*
     {
@@ -74,9 +83,12 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'Boolean',
-      name: 'scheduled',
-      hidden: true
+      class: 'foam.core.Enum',
+      of: 'foam.nanos.script.ScriptStatus',
+      name: 'status',
+      visibility: 'RO',
+      value: 'UNSCHEDULED',
+      javaValue: 'ScriptStatus.UNSCHEDULED'
     },
     {
       class: 'String',
@@ -86,7 +98,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'output',
-      visibility: foam.u2.Visibility.RO,
+      visibility: 'RO',
       view: { class: 'foam.u2.tag.TextArea', rows: 12, cols: 80, css: {"font-family": "monospace"}  }
     },
     {
@@ -148,6 +160,33 @@ foam.CLASS({
         ps.flush();
         setOutput(baos.toString());
     `
+    },
+    {
+      name: 'poll',
+      code: function() {
+        var self = this;
+        var interval = setInterval(function() {
+            self.scriptDAO.find(self.id).then(function(script) {
+              if ( script.status !== self.ScriptStatus.RUNNING ) {
+                self.copyFrom(script);
+                clearInterval(interval);
+
+                // create notification
+                var notification = self.ScriptRunNotification.create({
+                  userId: self.user.id,
+                  scriptId: script.id,
+                  notificationType: "Script Execution",
+                  body: `Status: ${script.status}
+                        Script Output: ${script.output}
+                        LastDuration: ${script.lastDuration}`
+                });
+                self.notificationDAO.put(notification);
+              }
+            }).catch(function() {
+               clearInterval(interval);
+              });
+        }, 2000);
+      }
     }
   ],
 
@@ -157,23 +196,26 @@ foam.CLASS({
       code: function() {
         var self = this;
         this.output = '';
-
-//        if ( this.language === foam.nanos.script.Language.BEANSHELL ) {
+        this.status = this.ScriptStatus.SCHEDULED;
         if ( this.server ) {
-          this.scheduled = true;
           this.scriptDAO.put(this).then(function(script) {
-            self.copyFrom(script);
+              self.copyFrom(script);
+              if ( script.status === self.ScriptStatus.RUNNING ) {
+                self.poll();
+              }
           });
         } else {
           var log = function() { this.output = this.output + Array.prototype.join.call(arguments, '') + '\n'; }.bind(this);
 
           with ( { log: log, print: log, x: self.__context__ } ) {
+            this.status = this.ScriptStatus.RUNNING;
             var ret = eval(this.code);
-            console.log('ret: ', ret);
-            // TODO: if Promise returned, then wait
+            var self = this;
+            Promise.resolve(ret).then(function() {
+              self.status = self.ScriptStatus.UNSCHEDULED;
+              self.scriptDAO.put(self);
+            });
           }
-
-          this.scriptDAO.put(this);
         }
       }
     }

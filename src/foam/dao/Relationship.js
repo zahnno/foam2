@@ -142,7 +142,7 @@ foam.CLASS({
   ],
 
   methods: [
-    function init() {
+    function initRelationship() {
       var sourceProp;
       var targetProp;
       var cardinality   = this.cardinality;
@@ -246,6 +246,8 @@ foam.CLASS({
         };
       }
       */
+      foam.package.registerClass(this);
+      return this;
     }
   ]
 });
@@ -256,10 +258,8 @@ foam.LIB({
   methods: [
     function RELATIONSHIP(m, opt_ctx) {
       var r = foam.dao.Relationship.create(m, opt_ctx);
-
       r.validate && r.validate();
-      foam.package.registerClass(r);
-
+      r.initRelationship();
       return r;
     }
   ]
@@ -558,6 +558,7 @@ foam.CLASS({
   properties: [
     ['of', 'foam.dao.ManyToManyRelationship'],
     ['transient', true],
+    ['javaInfoType', 'foam.core.AbstractFObjectRelationshipPropertyInfo'],
     ['tableCellFormatter', null],
     ['cloneProperty', function(value, map) {}],
     ['javaCloneProperty', '//noop'],
@@ -629,6 +630,14 @@ foam.CLASS({
     ]);
 `;
       }
+    }
+  ],
+
+  methods: [
+    function createJavaPropertyInfo_(cls) {
+      var info = this.SUPER(cls);
+      info.getMethod('compare').body = `return 0;`
+      return info;
     }
   ]
 });

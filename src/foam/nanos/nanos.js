@@ -73,10 +73,12 @@ FOAM_FILES([
   { name: "foam/nanos/menu/TreeAltView" },
   { name: "foam/nanos/auth/PermissionTableView", flags: ['web'] },
   { name: "foam/nanos/u2/navigation/TopNavigation", flags: ['web'] },
+  { name: "foam/nanos/u2/navigation/FooterView", flags: ['web'] },
   { name: "foam/nanos/u2/navigation/BusinessLogoView", flags: ['web'] },
   { name: "foam/nanos/u2/navigation/UserView", flags: ['web'] },
   { name: "foam/nanos/u2/navigation/SubMenuBar", flags: ['web'] },
   { name: "foam/nanos/script/Language" },
+  { name: "foam/nanos/script/ScriptStatus" },
   { name: "foam/nanos/script/Script" },
   { name: "foam/nanos/test/Test" },
   { name: "foam/nanos/test/TestBorder" },
@@ -113,5 +115,13 @@ FOAM_FILES([
   { name: 'foam/nanos/demo/relationship/Course' },
   { name: 'foam/nanos/demo/relationship/Professor' },
   { name: 'foam/nanos/demo/relationship/Student' },
-  { name: 'foam/nanos/demo/relationship/Controller' }
+  { name: 'foam/nanos/demo/relationship/Controller' },
+  { name: 'foam/nanos/notification/Notification'},
+  { name: 'foam/nanos/notification/notifications/ScriptRunNotification'},
+  { name: 'foam/nanos/notification/NotificationListView'},
+  { name: 'foam/nanos/notification/NotificationRowView'},
+  { name: 'foam/nanos/notification/NotificationSettingsView'},
+  { name: 'foam/nanos/notification/NotificationView'},
+  { name: 'foam/nanos/notification/NotificationNotificationView'},
+  { name: 'foam/nanos/notification/notifications/ScriptRunNotificationNotificationView'}
 ]);

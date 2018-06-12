@@ -360,10 +360,9 @@ foam.CLASS({
       name: 'id'
     },
     {
+      class: 'Blob',
       name: 'delegate',
       transient: true,
-      cloneProperty: function(){},
-      javaCloneProperty: '//nop',
       factory: function() {
         return this.blobService.find(this.id);
       },
@@ -393,7 +392,21 @@ foam.CLASS({
   properties: [
     [ 'of', 'foam.blob.Blob' ],
     [ 'tableCellView', function() {} ],
-    [ 'view', { class: 'foam.u2.view.BlobView' } ]
+    [ 'view', { class: 'foam.u2.view.BlobView' } ],
+    [ 'cloneProperty', function () {} ],
+    [ 'diffProperty', function () {} ],
+    [ 'javaCloneProperty', '// noop' ],
+    [ 'javaDiffProperty', '// noop' ]
+  ],
+
+  methods: [
+    function createJavaPropertyInfo_(cls) {
+      var info = this.SUPER(cls);
+      info.getMethod('compare').body = `return 0;`
+      info.getMethod('comparePropertyToObject').body = `return 0;`
+      info.getMethod('comparePropertyToValue').body = `return 0;`
+      return info;
+    }
   ]
 });
 
@@ -477,12 +490,15 @@ foam.CLASS({
   properties: [
     {
       class: 'String',
-      name: 'root'
+      name: 'root',
+      generateJava: false,
+      documentation: 'Root directory of where files are stored'
     },
     {
       class: 'String',
       name: 'tmp',
       transient: true,
+      documentation: 'Temp directory of where files are stored before hashing',
       expression: function(root) {
         return root + '/tmp';
       }
@@ -491,6 +507,7 @@ foam.CLASS({
       class: 'String',
       name: 'sha256',
       transient: true,
+      documentation: 'Directory of where files are stored after hashing',
       expression: function(root) {
         return root + '/sha256';
       }
@@ -791,7 +808,7 @@ foam.CLASS({
 
         var blob = prop.f(obj);
 
-        if ( ! blob ) return obj;
+        if ( ! blob ) return a();
 
         return self.blobService.put(blob).then(function(b) {
           prop.set(obj, b);
