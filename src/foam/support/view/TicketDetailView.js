@@ -24,7 +24,6 @@ foam.CLASS({
     'userDAO',
     'hideSummary',
     'messages',
-    'pop3',
     'ticketDAO', 
     'ticketMessageDAO'
   ],
