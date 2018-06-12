@@ -27,69 +27,23 @@ foam.CLASS({
   css:`
     ^ {
       height: 240px;
-    }
-    ^ .title {
-      margin-left: 20px;
-      width: 198px;
-      height: 40px;
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 2.86;
-      letter-spacing: 0.2px;
-      text-align: left;
-      color: #ffffff;
-    }
-    ^ .Mask {
       width: 448px;
-      height: 231px;
-      border-radius: 2px;
-      background-color: #ffffff;
-    }
-    ^ .Rectangle-7 {
-      float: left;
-      width: 135px;
-      height: 40px;
-      border-radius: 2px;
-      background-color: rgba(164, 179, 184, 0.1);
-      box-shadow: 0 0 1px 0 rgba(9, 54, 73, 0.8);
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 2.86;
-      letter-spacing: 0.2px;
-      text-align: center;
-    }
-    ^ .Rectangle-8 {
-      width: 135px;
-      height: 40px;
-      border-radius: 2px;
-      background-color: #59a5d5;
-      float: right;
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 2.86;
-      letter-spacing: 0.2px;
-      text-align: center;
-      color: #ffffff;
-    }
-    ^ .div {
-      margin-top: 40px; 
-    }
-    ^ .div2 {
-      padding: 20px;
     }
     ^ .input-wide{
       width: 408px;
       height: 40px;
-      margin-top: 10px;
+      margin: 20px;
+    }
+    ^ .btn{
+      font-weight: 100;
+      font-size: 13px;
+      border: none;
+    }
+    ^ .grey-button{
+      margin: 20px;
+    }
+    ^ .label{
+      text-align: center;
     }
     `,
 
@@ -117,15 +71,14 @@ foam.CLASS({
         .tag(this.ModalHeader.create({
           title: 'New Email'
         }))
-        .start().addClass('label1') 
+        .start().addClass('label') 
             .add(this.titlelabel)
         .end()
         .start(this.EMAIL).addClass('input-wide').end()
-        .start().addClass('div')
-        .start(this.CLOSE_MODAL).addClass('btn')
+        .start(this.CLOSE_MODAL).addClass('btn').addClass('grey-button')
         .end()
           .startContext({ data : this })
-        .start(this.NEXT_BUTTON).addClass('btn')
+        .start(this.NEXT_BUTTON).addClass('btn').addClass('blue-button')
         .end()
           .endContext()
         .end()
@@ -154,7 +107,7 @@ foam.CLASS({
       },
       {
         name: 'closeModal',
-        label: 'Close',
+        label: 'Cancel',
         code: function(X){
           X.closeDialog()
         }

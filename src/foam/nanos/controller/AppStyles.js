@@ -128,7 +128,7 @@ foam.CLASS({
       line-height: 2.86;
     }
     .blue-button{
-      background-color: %SECONDARYCOLOR%;
+      background-color: #59a5d5;
       color: #ffffff;
       margin: 20px 20px;
       float: right;
@@ -138,12 +138,12 @@ foam.CLASS({
     }
     .grey-button{
       background-color: rgba(164, 179, 184, 0.1);
-      border: solid 1px #8C92AC;
+      box-shadow: 0 0 1px 0 rgba(9, 54, 73, 0.8);      
       color: #093649;
     }
     .white-blue-button{
-      border: solid 1px %SECONDARYCOLOR%;
-      color: %SECONDARYCOLOR%;
+      border: solid 1px #59a5d5;
+      color: #59a5d5;
       background: none;
     }
   `
