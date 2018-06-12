@@ -6,18 +6,18 @@ foam.CLASS({
   documentation:'EMAIL SUPPORT MODAL',
 
   requires: [
-    'foam.u2.ModalHeader',
-    'foam.support.model.SupportEmail',
-    'foam.u2.dialog.Popup',
     'foam.support.modal.NewEmailSupportConfirmationModal',
-    'foam.u2.dialog.NotificationMessage'
+    'foam.support.model.SupportEmail',
+    'foam.u2.ModalHeader',
+    'foam.u2.dialog.NotificationMessage',
+    'foam.u2.dialog.Popup'
   ],
 
   imports: [
     'closeDialog',
+    'ctrl',
     'supportEmailDAO',
-    'user',
-    'ctrl'
+    'user'
   ],
 
   exports:[
@@ -111,22 +111,21 @@ foam.CLASS({
 
     methods:[
       function initE(){
-        this.addClass(this.myClass())
 
+        this.addClass(this.myClass())
         this
         .tag(this.ModalHeader.create({
           title: 'New Email'
         }))
-        .start().addClass('div2')
         .start().addClass('label1') 
             .add(this.titlelabel)
         .end()
         .start(this.EMAIL).addClass('input-wide').end()
         .start().addClass('div')
-        .start(this.CLOSE_MODAL).addClass('Rectangle-7')
+        .start(this.CLOSE_MODAL).addClass('btn')
         .end()
           .startContext({ data : this })
-        .start(this.NEXT_BUTTON).addClass('Rectangle-8')
+        .start(this.NEXT_BUTTON).addClass('btn')
         .end()
           .endContext()
         .end()

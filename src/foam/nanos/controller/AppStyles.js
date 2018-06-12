@@ -118,5 +118,33 @@ foam.CLASS({
     input:focus{
       outline: none;
     }
+    .btn{
+      width: 135px;
+      height: 40px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+      line-height: 2.86;
+    }
+    .blue-button{
+      background-color: %SECONDARYCOLOR%;
+      color: #ffffff;
+      margin: 20px 20px;
+      float: right;
+    }
+    .blue-button:hover{
+      opacity: 0.9;
+    }
+    .grey-button{
+      background-color: rgba(164, 179, 184, 0.1);
+      border: solid 1px #8C92AC;
+      color: #093649;
+    }
+    .white-blue-button{
+      border: solid 1px %SECONDARYCOLOR%;
+      color: %SECONDARYCOLOR%;
+      background: none;
+    }
   `
 });
