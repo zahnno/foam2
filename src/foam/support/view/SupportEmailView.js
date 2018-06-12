@@ -29,21 +29,12 @@ foam.CLASS({
       width: 135px;
       height: 40px;
       border-radius: 2px;
+      border: none;
       background-color: #59a5d5;
-      margin-top: 30px;
-      margin-right: 600px;
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: normal;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 2.86;
-      letter-spacing: 0.2px;
       text-align: center;
       color: #ffffff;
       position: relative;
       margin: auto;
-      margin-left: 
     }
     ^ .btn-mid{
       width: 100%;
@@ -105,7 +96,10 @@ foam.CLASS({
       margin-right: 388px
     }
     ^ .foam-u2-view-TableView-th-connectedTime{
-      width: 140px;
+      width: 400px;
+    }
+    ^ .foam-u2-view-TableView-row{
+      border: solid 0.5px #e9e9e9;
     }
   `,
 
@@ -177,7 +171,7 @@ foam.CLASS({
             class: 'foam.u2.view.ScrollTableView',
             height: 20,
             data: this.supportEmailDAO,
-            columns: ['id', 'email', 'status', 'connectedTime']
+            columns: [ 'email', 'connectedTime', 'status' ]
           }).addClass(this.myClass('table')).end();
           }
         ] 

@@ -13,7 +13,8 @@ foam.CLASS({
     },
     {
       class: 'String',
-      name: 'email'
+      name: 'email',
+      label: 'Email Address'
     },
     {
       class: 'Enum',
@@ -21,6 +22,13 @@ foam.CLASS({
       name: 'status',
       factory: function(){
         return this.SupportStatus.PENDING;
+      },
+      tableCellFormatter: function(state, obj, rel){
+        this.start()
+          .addClass('generic-status')
+          .addClass(state.label)
+          .add(state.label)
+        .end();      
       }
     },
     {
