@@ -94,6 +94,12 @@ foam.CLASS({
       border-radius: 100px;
       background-color: #a4b3b8;
     }
+    .Connected {
+      width: 80px;
+      height: 20px;
+      border-radius: 100px;
+      background-color: #2cab70;
+    }
     ^ .generic-status {
       display: inline-block;
       font-family: Roboto;
