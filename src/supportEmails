@@ -24,3 +24,6 @@ p({"class":"foam.support.model.SupportEmail","id":11,"email":"2@s.com","status":
 p({"class":"foam.support.model.SupportEmail","id":12,"email":"asfghj@cmom.com","status":"Pending","userId":1})
 // Modified by admin admin (1) at 2018-03-26T18:46:42Z
 p({"class":"foam.support.model.SupportEmail","id":13,"email":"asdkh@dj.com","status":"Pending","userId":1})
+
+// Modified by admin admin (1) at 2018-06-12T18:34:46Z
+p({"class":"foam.support.model.SupportEmail","id":14,"email":"new@email.com","status":"CONNECTED","userId":1})

@@ -151,6 +151,7 @@ foam.CLASS({
   methods: [
     function init() {
       this.SUPER();
+      
       var self = this;
       self.clientPromise.then(function(client) {
         foam.__context__.register(foam.u2.UnstyledActionView, 'foam.u2.ActionView');

@@ -1,3 +1,4 @@
+
 foam.CLASS({
   package: 'foam.nanos.controller',
   name: 'AppStyles',

@@ -6,16 +6,16 @@ foam.CLASS({
   documentation:'EMAIL DELETE MODAL',
 
   requires: [
-    'foam.u2.ModalHeader',
     'foam.support.model.SupportEmail',
-    'foam.u2.dialog.Popup',
-    'foam.u2.dialog.NotificationMessage'
+    'foam.u2.ModalHeader',
+    'foam.u2.dialog.NotificationMessage',
+    'foam.u2.dialog.Popup'
   ],
 
   imports: [
     'closeDialog',
-    'user',
-    'supportEmailDAO'
+    'supportEmailDAO',
+    'user'
   ],
 
   css:`
@@ -36,7 +36,6 @@ foam.CLASS({
       color: #093649;
       padding-left: 40px;
       margin-bottom: 100px;
-      
     }
     ^ .Mask {
       width: 448px;
@@ -100,7 +99,7 @@ foam.CLASS({
     ],
     
     messages:[
-      { name:'titlelabel', message:'Do you want to delete the email xx@xx.com?' },
+      { name:'titlelabel', message:'Do you want to delete the email - ' },
     ],
 
     methods:[
@@ -113,7 +112,7 @@ foam.CLASS({
         }))
         .start().addClass('div2')
           .start().addClass('label1') 
-            .add(this.titlelabel)
+            .add(this.titlelabel + this.email + '?')
           .end()
           .start().addClass('div')
           .start(this.CLOSE_MODAL).addClass('Rectangle-7')
@@ -131,7 +130,7 @@ foam.CLASS({
         code: function(X) {
           this.data.status = "Disabled"
           this.supportEmailDAO.put(this.data);
-          this.add(this.NotificationMessage.create({ message: 'Your email address is disabled and you need to update it ' })); 
+          this.add(this.NotificationMessage.create({ message: 'Your email address has been disabled.' })); 
           X.closeDialog()
         }
       },

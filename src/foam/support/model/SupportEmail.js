@@ -2,6 +2,10 @@ foam.CLASS({
   package: 'foam.support.model',
   name: 'SupportEmail',
 
+  requires: [
+    'foam.support.model.SupportStatus'
+  ],
+
   properties:[
     {
       class: 'Long',
@@ -12,10 +16,11 @@ foam.CLASS({
       name: 'email'
     },
     {
-      class: 'String',
+      class: 'Enum',
+      of: 'foam.support.model.SupportStatus',
       name: 'status',
       factory: function(){
-        return 'Pending'
+        return this.SupportStatus.PENDING;
       }
     },
     {
@@ -32,3 +37,23 @@ foam.CLASS({
     }
   ]
 });
+
+foam.ENUM({
+  package: 'foam.support.model',
+  name: 'SupportStatus',
+
+  values: [
+    {
+      name: 'CONNECTED',
+      label: 'Connected'
+    },
+    {
+      name: 'PENDING',
+      label: 'Pending'
+    },
+    {
+      name: 'DISABLED',
+      label: 'Disabled'
+    }
+  ]
+})
