@@ -1,0 +1,5 @@
+
+// Modified by admin admin (1) at 2018-06-12T15:42:41Z
+p({"class":"foam.support.model.Ticket","id":1,"requestorEmail":"another@email.com","requestorName":"Some name","subject":"here;s a subject","createdAt":"2018-06-12T15:42:41.711Z","status":"Solved"})
+// Modified by admin admin (1) at 2018-06-12T15:44:03Z
+p({"class":"foam.support.model.Ticket","id":1,"status":"Pending"})

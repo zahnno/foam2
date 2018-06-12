@@ -291,7 +291,7 @@ foam.CLASS({
         .end()
         .start().addClass('primarydiv')
           .start().addClass('Missing-Cash-Out-for').add(this.data.subject + "...").end()
-          .start().add(this.status).addClass('generic-status '+ this.status).end()
+          .start().add(this.status).addClass('generic-status').addClass(this.status).end()
         .end()
         .br()
         .start().addClass('sub-div-format')
@@ -385,7 +385,7 @@ foam.CLASS({
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Pending').addClass('Pending status').end()
+          .start().add('Pending').addClass('Pending').addClass('status').end()
         .end()
 
         .start('div').on('click', function(){
@@ -393,7 +393,7 @@ foam.CLASS({
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('New').addClass('New status').end()
+          .start().add('New').addClass('New').addClass('status').end()
         .end()
 
         .start('div').on('click', function(){
@@ -401,7 +401,7 @@ foam.CLASS({
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Solved').addClass('Solved status').end()
+          .start().add('Solved').addClass('Solved').addClass('status').end()
         .end()
 
         .start('div').on('click', function(){
@@ -409,7 +409,7 @@ foam.CLASS({
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Updated').addClass('Updated status').end()
+          .start().add('Updated').addClass('Updated').addClass('status').end()
         .end()
 
         .start('div').on('click', function(){
@@ -417,7 +417,7 @@ foam.CLASS({
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Open').addClass('Open status').end()
+          .start().add('Open').addClass('Open').addClass('status').end()
         .end()
                  
         self.voidMenuBtn_.add(self.voidPopUp_)

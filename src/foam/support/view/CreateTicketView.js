@@ -357,35 +357,35 @@ foam.CLASS({
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Pending').addClass('Pending status').end()
+          .start().add('Pending').addClass('Pending').addClass('status').end()
         .end()
         .start('div').on('click', function(){
           self.status = 'New'
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('New').addClass('New status').end()
+          .start().add('New').addClass('New').addClass('status').end()
         .end()
         .start('div').on('click', function(){
           self.status = 'Solved'
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Solved').addClass('Solved status').end()
+          .start().add('Solved').addClass('Solved').addClass('status').end()
         .end()
         .start('div').on('click', function(){
           self.status = 'Updated'
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Updated').addClass('Updated status').end()
+          .start().add('Updated').addClass('Updated').addClass('status').end()
         .end()
         .start('div').on('click', function(){
           self.status = 'Open'
           self.voidPopUp()
         })
           .start().add('Submit as').addClass('Submit-as').end()
-          .start().add('Open').addClass('Open status').end()
+          .start().add('Open').addClass('Open').addClass('status').end()
         .end()
                  
         self.voidMenuBtn_.add(self.voidPopUp_)
