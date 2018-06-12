@@ -20,7 +20,14 @@ foam.CLASS({
 
   css:`
     ^ {
+      width: 940px;
+      border-radius: 2px;
+      background-color: #ffffff;
+      margin: auto;
       padding: 2px;
+      margin-top: 40px;
+      padding-left: 40px;
+      text-align: center;
     }
     ^ .foam-u2-UnstyledActionView-create {
       display: none;
@@ -42,64 +49,26 @@ foam.CLASS({
       margin-top: 20px;
       margin-bottom: 23px;
     }
-    ^ .Rectangle-11-Copy {
-      width: 1027px;
-      border-radius: 2px;
-      background-color: #ffffff;
-      margin: auto;
-    }
     ^ .title{
-      width: 100%;
-      height: 20px;
       opacity: 0.6;
-      font-family: Roboto;
       font-size: 20px;
       font-weight: 300;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: 1;
-      letter-spacing: 0.3px;
       text-align: left;
       color: #093649;
-      padding-left: 10px;
-      padding-right: 10px;
-      padding-top: 30px;
-    }
-    ^ .title1{
-      padding: 2px;
-      margin: 28px;
-    }
-    ^ .align{
-      margin-left: 10px;
-      margin-right: 10px;
-      margin-bottom: 30px;
-    }
-    ^ .input-container-half{
-      width: 960px;
-      height: 35px;
-      border-radius: 2px;
-      background-color: #ffffff;
-    }
-    ^ .No-support-email-con{
-      width: 183px;
-      height: 16px;
-      font-family: Roboto;
-      font-size: 14px;
-      font-weight: 300;
-      font-style: normal;
-      font-stretch: normal;
-      line-height: normal;
-      letter-spacing: 0.2px;
-      text-align: left;
-      color: #093649;
-      margin-left: 389px;
-      margin-right: 388px
+      margin: 20px 0 40px 0;
     }
     ^ .foam-u2-view-TableView-th-connectedTime{
       width: 400px;
     }
     ^ .foam-u2-view-TableView-row{
       border: solid 0.5px #e9e9e9;
+    }
+    ^ .foam-u2-view-TableView {
+      width: 880px;
+      margin: 0;
+    }
+    ^ th {
+      font-weight: 400;
     }
   `,
 
@@ -108,6 +77,10 @@ foam.CLASS({
       class: 'Boolean',
       name: 'emptyDAO',
     }
+  ],
+
+  messages: [
+    { name: 'Title', message: 'Support Email Management' }
   ],
 
   methods: [
@@ -119,23 +92,18 @@ foam.CLASS({
 
       this
       .addClass(this.myClass())
-      .start().addClass('Rectangle-11-Copy')
-        .start().addClass('title1')
-          .start().add('Support Email Management').addClass('title').end()
-          .start().addClass('align').end() 
-          .start({
-            class: 'foam.u2.ListCreateController',
-            dao: this.supportEmailDAO,
-            summaryView: this.EmailSupportTableView.create(),
-            showActions: false
-          }).hide(this.emptyDAO$).end()
-          .start().addClass('input-container-half').show(this.emptyDAO$)
-            .start().add('No Email Support Connected').addClass('No-support-email-con').end()
-          .end()
-          .start().addClass('btn-mid')
-            .start(this.NEW_EMAIL).end()
-          .end()
-        .end()   
+      .start().add(this.Title).addClass('title').end()
+      .start({
+        class: 'foam.u2.ListCreateController',
+        dao: this.supportEmailDAO,
+        summaryView: this.EmailSupportTableView.create(),
+        showActions: false
+      }).hide(this.emptyDAO$).end()
+      .start().show(this.emptyDAO$)
+        .start().add('No Support Emails Connected').end()
+      .end()
+      .start().addClass('btn-mid')
+        .start(this.NEW_EMAIL).end()
       .end()
     }
   ],
@@ -163,7 +131,7 @@ foam.CLASS({
         'selection'
       ],
       
-  methods: [
+    methods: [
       function initE() {
         this
           .start({
