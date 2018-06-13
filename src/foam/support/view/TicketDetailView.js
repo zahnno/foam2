@@ -348,10 +348,6 @@ foam.CLASS({
             self.stack.push({ class: 'foam.support.view.TicketView' });
           });
         });
-
-        // if(this.viewData.variant == false && this.messages == "" && !this.data.requestorEmail){
-
-        // }
       }
     },
     {

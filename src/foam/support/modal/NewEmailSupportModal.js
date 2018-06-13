@@ -45,6 +45,9 @@ foam.CLASS({
     ^ .label{
       text-align: center;
     }
+    ^ .blue-button{
+      float: right;
+    }
     `,
 
     properties: [

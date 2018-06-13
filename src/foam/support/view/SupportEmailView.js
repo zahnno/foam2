@@ -62,6 +62,9 @@ foam.CLASS({
     ^ .blue-button{
       margin: 20px;
     }
+    ^ canvas {
+      display: none;
+    }
   `,
 
   properties: [
