@@ -1,9 +1,25 @@
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
 foam.CLASS({
   package: 'foam.nanos.jetty',
   name: 'HttpServer',
+
   implements: [
     'foam.nanos.NanoService'
   ],
+
+  javaImports: [
+    'org.eclipse.jetty.http.pathmap.ServletPathSpec',
+    'org.eclipse.jetty.websocket.server.WebSocketUpgradeFilter',
+    'org.eclipse.jetty.websocket.servlet.ServletUpgradeRequest',
+    'org.eclipse.jetty.websocket.servlet.ServletUpgradeResponse',
+    'org.eclipse.jetty.websocket.servlet.WebSocketCreator'
+  ],
+
   properties: [
     {
       class: 'Int',
@@ -31,6 +47,12 @@ foam.CLASS({
       name: 'errorMappings',
       javaFactory: `return new foam.nanos.servlet.ErrorPageMapping[0];`
     },
+    {
+      class: 'FObjectArray',
+      name: 'filterMappings',
+      of: 'foam.nanos.servlet.FilterMapping',
+      javaFactory: 'return new foam.nanos.servlet.FilterMapping[0];'
+    }
   ],
   methods: [
     {
@@ -73,9 +95,37 @@ foam.CLASS({
           }
         }
 
+        for ( foam.nanos.servlet.FilterMapping mapping : getFilterMappings() ) {
+          org.eclipse.jetty.servlet.FilterHolder holder =
+            handler.addFilter(
+              (Class<? extends javax.servlet.Filter>)Class.forName(mapping.getFilterClass()),
+              mapping.getPathSpec(),
+              java.util.EnumSet.of(javax.servlet.DispatcherType.REQUEST));
+
+          java.util.Iterator iter = mapping.getInitParameters().keySet().iterator();
+
+          while ( iter.hasNext() ) {
+            String key = (String)iter.next();
+            holder.setInitParameter(key, (String)mapping.getInitParameters().get(key));
+          }
+        }
+
+        // set error handler
         handler.setErrorHandler(errorHandler);
+
+        // Add websocket upgrade filter
+        WebSocketUpgradeFilter wsFilter = WebSocketUpgradeFilter.configureContext(handler);
+        // set idle time out to 10s
+        wsFilter.getFactory().getPolicy().setIdleTimeout(10000);
+        // add mapping
+        wsFilter.addMapping(new ServletPathSpec("/service/*"), new WebSocketCreator() {
+          @Override
+          public Object createWebSocket(ServletUpgradeRequest req, ServletUpgradeResponse resp) {
+            return new foam.nanos.ws.NanoWebSocket(getX());
+          }
+        });
+
         server.setHandler(handler);
-        
         server.start();
       } catch(Exception e) {
         e.printStackTrace();

@@ -8,8 +8,10 @@ var classes = [
   'foam.core.Axiom',
   'foam.core.Serializable',
   'foam.core.Exception',
+  'foam.core.Freezable',
   'foam.core.ContextAgent',
   'foam.core.Identifiable',
+  'foam.core.AbstractFObject',
   'foam.mlang.predicate.Predicate',
   'foam.mlang.predicate.True',
   'foam.mlang.predicate.False',
@@ -140,7 +142,6 @@ var classes = [
   'foam.nanos.auth.ClientAuthService',
   'foam.nanos.auth.HtmlDoc',
   'foam.nanos.auth.PasswordExpiryAuthService',
-  'foam.nanos.auth.twofactor.authy.AuthyService',
   'foam.nanos.auth.token.Token',
   'foam.nanos.auth.token.TokenService',
   'foam.nanos.auth.token.ClientTokenService',
@@ -263,6 +264,7 @@ var classes = [
   'foam.nanos.jetty.HttpServer',
   'foam.nanos.servlet.ServletMapping',
   'foam.nanos.servlet.ErrorPageMapping',
+  'foam.nanos.servlet.FilterMapping',
 
   'foam.lib.query.TestModel',
   'foam.lib.query.FooEnum',
@@ -280,11 +282,15 @@ var classes = [
   'foam.nanos.dig.exception.DAOPutException',
   'foam.nanos.dig.exception.EmptyDataException',
   'foam.nanos.dig.exception.UnsupportException',
+<<<<<<< HEAD
 
   //Support Files
   'foam.support.model.TicketMessage',
   'foam.support.model.SupportEmail',
   'foam.support.model.Ticket'
+=======
+  'foam.nanos.dig.exception.UnknownIdException'
+>>>>>>> 52c74a28bdcd78b20f6c6cef83d3ad4ec6b9a2a7
 ];
 
 var abstractClasses = [

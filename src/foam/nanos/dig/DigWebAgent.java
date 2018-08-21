@@ -121,7 +121,7 @@ public class DigWebAgent
           jsonParser.setX(x);
           foam.lib.json.Outputter outputterJson = new foam.lib.json.Outputter(OutputterMode.NETWORK);
           outputterJson.setOutputDefaultValues(true);
-          outputterJson.setOutputClassNames(false);
+          outputterJson.setOutputClassNames(true);
           // let FObjectArray parse first
           if ( SafetyUtil.isEmpty(data) ) {
               DigErrorMessage error = new EmptyDataException.Builder(x)
@@ -245,7 +245,7 @@ public class DigWebAgent
           if ( Format.JSON == format ) {
             foam.lib.json.Outputter outputterJson = new foam.lib.json.Outputter(OutputterMode.NETWORK);
             outputterJson.setOutputDefaultValues(true);
-            outputterJson.setOutputClassNames(false);
+            outputterJson.setOutputClassNames(true);
             outputterJson.output(sink.getArray().toArray());
 
             //resp.setContentType("application/json");
@@ -355,14 +355,18 @@ public class DigWebAgent
         out.println("</table>");*/
 
         out.println("<input type=hidden id=classInfo style=margin-left:30;width:350 value=" + cInfo.getId() + "></input>");
-        out.println("<script>var vurl = document.location.protocol + '//' + document.location.host + '/?path=' + document.getElementById('classInfo').value + '#docs'; window.open(vurl, '_self'); </script>");
+        out.println("<script>var vurl = document.location.protocol + '//' + document.location.host + '/?path=' + document.getElementById('classInfo').value + '#docs'; window.open(vurl, '_self');</script>");
       } else if ( Command.remove == command ) {
         PropertyInfo idProp     = (PropertyInfo) cInfo.getAxiomByName("id");
         Object       idObj      = idProp.fromString(id);
         FObject      targetFobj = dao.find(idObj);
 
         if ( targetFobj == null ) {
-          throw new RuntimeException("Unknown ID");
+          DigErrorMessage error = new UnknownIdException.Builder(x)
+            .build();
+          outputException(x, resp, format, out, error);
+
+          return;
         } else {
           dao.remove(targetFobj);
           out.println("Success");
@@ -446,7 +450,7 @@ public class DigWebAgent
       jsonParser.setX(x);
       foam.lib.json.Outputter outputterJson = new foam.lib.json.Outputter(OutputterMode.NETWORK);
       outputterJson.setOutputDefaultValues(true);
-      outputterJson.setOutputClassNames(false);
+      outputterJson.setOutputClassNames(true);
       outputterJson.output(error);
       out.println(outputterJson.toString());
 
