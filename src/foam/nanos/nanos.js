@@ -46,6 +46,8 @@ FOAM_FILES([
   { name: "foam/nanos/auth/token/ClientTokenService" },
   { name: "foam/nanos/auth/token/Token" },
   { name: "foam/nanos/auth/token/AbstractTokenService" },
+  { name: "foam/nanos/auth/ClientAgentAuthService" },
+  { name: "foam/nanos/auth/AgentAuthService" },
   { name: "foam/nanos/auth/ChangePasswordView"},
   { name: 'foam/nanos/auth/HumanNameTrait' },
   { name: "foam/nanos/auth/User" },
