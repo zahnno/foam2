@@ -362,6 +362,10 @@ foam.CLASS({
     {
       class: 'Reference',
       of: 'foam.nanos.auth.Group',
+      documentation: `
+        Group used to determine user access when acting as another user.
+        Refer to the AgentAuthService for more information.
+      `,
       name: 'group'
     }
   ]
