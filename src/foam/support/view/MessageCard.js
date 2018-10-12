@@ -62,7 +62,7 @@ foam.CLASS({
       text-align: left;
       color: #a4b3b8;
       padding-top: 14px;
-      width: 225px;
+      width: 150px;
       display: inline-block;
     }
     ^ .text {
@@ -101,7 +101,7 @@ foam.CLASS({
     }
     ^ .internal-status{
       display: inline-block;
-      width: 100px;
+      width: 90px;
       height: 20px;
       padding-left: 8px;
       padding-top: 2px;

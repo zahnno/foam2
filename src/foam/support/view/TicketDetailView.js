@@ -348,18 +348,12 @@ foam.CLASS({
           self.data.messages.put(message).then(function(a){
             if (!a) return;
             if( !self.data.emailId ){
-              // var messageId = self.pop3.sendEmail(self.data.requestorEmail, self.data.subject, self.viewData.message)
               self.data.emailId = 2;
               self.user.tickets.put(self.data);
-              self.stack.push({ class: 'foam.support.view.TicketView' });
             }
             self.stack.push({ class: 'foam.support.view.TicketView' });
           });
         });
-
-        // if(this.viewData.variant == false && this.messages == "" && !this.data.requestorEmail){
-
-        // }
       }
     },
     {
