@@ -280,7 +280,7 @@ foam.CLASS({
       .start()
         .start(this.BACK_ACTION).end()
         .start(this.VOID_DROP_DOWN, null, this.voidMenuBtn_$).enableClass('hide', this.status$.map(function(a){ return a == 'Solved' ? true : false; }))
-          .start({ class:'foam.u2.tag.Image', data: 'images/drop_down.png' }).end()
+          .start({ class:'foam.u2.tag.Image', data: '../../support/images/drop_down.png' }).end()
         .end()
           .start(this.SUBMIT_TICKET).addClass('Rectangle-8').enableClass('hide', this.status$.map(function(a){ return a == 'Solved' ? true : false; }))
             .start().add('Submit as').addClass('SubmitButton').end()

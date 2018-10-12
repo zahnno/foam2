@@ -123,7 +123,7 @@ foam.CLASS({
       var self = this;
       //find requestorName associated to ticketMessages
       this.userDAO.find(this.message.senderId).then(function(a){
-        self.requestName = a.firstName + " " + a.lastName;
+        self.requestName = a ? a.label() : 'unknown';
       });
 
       this
@@ -131,10 +131,10 @@ foam.CLASS({
         .start('div').addClass('bg')
           .start('hr').end() 
             .start().addClass('spaceline')
-              .start({ class:'foam.u2.tag.Image', data:'images/person.svg' }).addClass('person')
+              .start({ class:'foam.u2.tag.Image', data:'../../support/images/person.svg' }).addClass('person')
               .start()
                 .start().add(this.requestName$).addClass('company-name').end() 
-                .start().add(this.message.dateCreated).addClass('date').end()
+                .start().add(this.message.dateCreated.toLocaleString()).addClass('date').end()
                 .callIf(this.message.type == 'Internal', function(){
                   this.start().addClass('internal-status')
                     .add('Internal Note')

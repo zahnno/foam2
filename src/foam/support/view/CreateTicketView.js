@@ -35,6 +35,7 @@ foam.CLASS({
   css: `
     ^ {
       box-sizing: border-box;
+      margin-top: 50px;
     }
     ^ .foam-support-view-CreateTicketView {
       margin-top:20px;
@@ -261,7 +262,7 @@ foam.CLASS({
         .addClass(this.myClass())
         .start(this.DELETE_DRAFT).addClass('Rectangle-7').end()
         .start(this.VOID_DROP_DOWN, null, this.voidMenuBtn_$)
-          .start({ class:'foam.u2.tag.Image', data:'images/drop_down.png' }).end()
+          .start({ class:'foam.u2.tag.Image', data:'../../support/images/drop_down.png' }).end()
         .end()
         .start(this.SUBMIT_TICKET).addClass('Rectangle-8')
             .start().add('Submit as').addClass('SubmitButton').end()

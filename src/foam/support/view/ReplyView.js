@@ -129,7 +129,7 @@ foam.CLASS({
       .start().addClass('bg')
         .startContext({ data: this })
           .start().addClass('firstdiv')
-            .start({ class:'foam.u2.tag.Image', data:'images/person.svg' }).addClass('person').end()
+            .start({ class:'foam.u2.tag.Image', data:'../../support/images/person.svg' }).addClass('person').end()
             .nbsp().nbsp().nbsp().nbsp().nbsp()
             .start(this.PUBLIC_REPLY).addClass('Public-Reply').enableClass('border', this.variant$.map(function(a){ return !a; })).end()
             .start(this.INTERNAL_NOTE).addClass('Internal-Note').enableClass('border', this.variant$).end()
