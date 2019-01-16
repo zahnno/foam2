@@ -536,7 +536,17 @@ foam.LIB({
         foam.assert(typeof str === 'string',
             'Cannot capitalize non-string values.');
         // switchFromProperyName to //SwitchFromPropertyName
+        if ( ! str ) return '';
         return str[0].toUpperCase() + str.substring(1);
+      })
+    },
+    {
+      name: 'pluralize',
+      code: foam.Function.memoize1(function(str) {
+        // Ex. Book -> Books, Currency -> Currencies, Kiss -> Kisses
+        if ( str.endsWith('s') ) return str + 'es';
+        if ( str.endsWith('y') ) return str.substring(0, str.length-1) + 'ies';
+        return str + 's';
       })
     },
     {
@@ -764,7 +774,17 @@ foam.LIB({
       return typeof o === 'object' && ! Array.isArray(o) &&
           ! foam.core.FObject.isInstance(o) && ! foam.Null.isInstance(o);
     },
-    function clone(o) { return o; },
+    function clone(o) {
+      const newObj = {};
+
+      for ( var key in o ) {
+        if ( o.hasOwnProperty(key) ) {
+          newObj[key] = foam.util.clone(o[key]);
+        }
+      }
+
+      return newObj;
+    },
     function equals(a, b) { return a === b; },
     function compare(a, b) {
       if ( ! foam.Object.isInstance(b) ) return 1;

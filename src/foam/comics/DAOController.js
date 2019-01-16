@@ -20,6 +20,11 @@ foam.CLASS({
   package: 'foam.comics',
   name: 'DAOController',
 
+  requires: [
+    'foam.comics.SearchMode',
+    'foam.u2.borders.NullBorder',
+  ],
+
   topics: [
     'finished'
   ],
@@ -30,8 +35,7 @@ foam.CLASS({
       hidden: true
     },
     {
-      name: 'predicate',
-      view: { class: 'foam.u2.view.ReciprocalSearch' }
+      name: 'predicate'
     },
     {
       name: 'filteredDAO',
@@ -78,35 +82,18 @@ foam.CLASS({
       value: true
     },
     {
-      class: 'foam.u2.ViewSpec',
-      name: 'topBorder',
-      documentation: `Lets you put a view above the rest of the DAOController
-        content.`
-    },
-    {
-      class: 'foam.u2.ViewSpec',
-      name: 'rightBorder',
-      documentation: `Lets you put a view to the right of the rest of the
-        DAOController content.`
-    },
-    {
-      class: 'foam.u2.ViewSpec',
-      name: 'bottomBorder',
-      documentation: `Lets you put a view below the rest of the DAOController
-        content.`
-    },
-    {
-      class: 'foam.u2.ViewSpec',
-      name: 'leftBorder',
-      documentation: `Lets you put a view to the left of the rest of the
-        DAOController content.`
-    },
-    {
       class: 'Boolean',
-      name: 'filtersEnabled',
-      documentation: `Set to true if you want to completely hide the search
-        panel and the button to toggle it.`,
+      name: 'toggleEnabled',
+      documentation: 'True to enable the toggle filters button.',
       value: true
+    },
+    {
+      name: 'border',
+      documentation: `
+        If you want the DAO controller to be the content of a border view, set
+        the border here.
+      `,
+      factory: function() { return this.NullBorder.create(); }
     },
     {
       class: 'Boolean',
@@ -114,16 +101,75 @@ foam.CLASS({
       documentation: `Used internally to keep track of whether the search panel
         is currently hidden or not.`,
       value: false
+    },
+    {
+      class: 'Enum',
+      of: 'foam.comics.SearchMode',
+      name: 'searchMode',
+      documentation: `
+        The level of search capabilities that the controller should have.
+      `,
+      factory: function() {
+        return this.SearchMode.FULL;
+      }
+    },
+    {
+      name: 'searchColumns',
+      documentation: `
+        Lets you pick which properties on the model should be used as search
+        filters. You should set the search columns on the model itself and only
+        set this property when you want to override the ones set on the model.
+      `
+    },
+    {
+      class: 'String',
+      name: 'title',
+      expression: function(data$data$of) {
+        return 'Browse ' + data$data$of.model_.plural;
+      }
+    },
+    {
+      class: 'String',
+      name: 'subtitle'
+    },
+    {
+      class: 'FObjectProperty',
+      of: 'foam.core.Action',
+      name: 'primaryAction',
+      documentation: `
+        The most important action on the page. The view for this controller may
+        choose to display this action prominently.
+      `
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'summaryView',
+      documentation: `
+        Subclasses can set this to override the default summaryView.
+      `
+    },
+    {
+      class: 'String',
+      name: 'createLabel',
+      documentation: `
+        Set this to override the label of the create button, which is the
+        default primary action.
+      `
+    },
+    {
+      class: 'String',
+      name: 'detailView',
+      value: 'foam.u2.DetailView'
     }
   ],
 
   actions: [
     {
       name: 'toggleFilters',
-      isAvailable: function(filtersEnabled) { return filtersEnabled; },
+      isAvailable: function(toggleEnabled) { return toggleEnabled; },
       code: function() {
         this.searchHidden = ! this.searchHidden;
-      },
+      }
     },
     {
       name: 'create',
@@ -170,7 +216,7 @@ foam.CLASS({
     {
       name: 'export',
       isAvailable: function(exportEnabled) { return exportEnabled; },
-      code: function() { 
+      code: function() {
         this.pub('export', this.filteredDAO)
       }
     }

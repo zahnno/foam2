@@ -1,16 +1,36 @@
+<<<<<<< HEAD
+=======
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 foam.CLASS({
   package: 'foam.support.view',
   name: 'TicketSummaryView',
   extends: 'foam.u2.View',
+<<<<<<< HEAD
   documentation: 'Top-level ticket summary view.',
   implements: [
     'foam.mlang.Expressions'
   ],
+=======
+
+  documentation: 'Top-level ticket summary view.',
+
+  implements: [
+    'foam.mlang.Expressions'
+  ],
+
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
   requires: [
     'foam.support.model.Ticket',
     'foam.support.view.SummaryCard',
     'foam.support.view.TicketView',
   ],
+<<<<<<< HEAD
   imports: [
     'user'
   ],
@@ -63,6 +83,33 @@ foam.CLASS({
     { name: 'pendingLabel', message: 'Pending' },
     { name: 'solvedLabel',      message: 'Solved' }
   ],
+=======
+
+  imports: [
+    'user'
+  ],
+
+  exports: [ 'as data' ],
+ 
+  css: `
+    ^ {
+      margin-bottom: 20px;
+    }
+    ^:hover{
+      cursor: pointer;
+    }
+  `,
+
+  messages: [
+    { name: 'title',        message: 'Tickets' },
+    { name: 'newLabel',     message: 'New'     },
+    { name: 'updatedLabel', message: 'Updated' },
+    { name: 'openLabel',    message: 'Open'    },
+    { name: 'pendingLabel', message: 'Pending' },
+    { name: 'solvedLabel',  message: 'Solved'  }
+  ],
+
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
   properties: [
     {
       name: 'dao',
@@ -70,6 +117,7 @@ foam.CLASS({
     },
     {
       class: 'Int',
+<<<<<<< HEAD
       name: 'newCount',
       value: "...",
    
@@ -122,6 +170,79 @@ foam.CLASS({
         .end()
     },
   ],
+=======
+      name: 'newCount'
+    },
+    {
+      class: 'Int',
+      name: 'updatedCount'
+    },
+    {
+      class: 'Int',
+      name: 'openCount'
+    },
+    {
+      class: 'Int',
+      name: 'pendingCount'
+    },
+    {
+      class: 'Int',
+      name: 'solvedCount'
+    },
+    {
+      class: 'Int',
+      name: 'ticketCount'
+    }
+  ],
+
+  methods: [
+    function initE() {
+    this.dao.on.sub(this.onDAOUpdate);
+    this.onDAOUpdate();
+
+    this
+      .addClass(this.myClass())
+      .start().addClass('blue-card-title')
+        .add(this.title)
+        .start()
+          .addClass('thin-align')
+          .add(this.ticketCount$)
+        .end()
+      .end()
+      .start('span')
+        .tag(this.SummaryCard, {
+          count$: this.newCount$,
+          status: this.newLabel
+        })
+      .end()
+      .start('span')
+        .tag(this.SummaryCard, {
+          count: this.updatedCount$,
+          status: this.updatedLabel
+        })
+      .end()
+      .start('span')
+        .tag(this.SummaryCard, {
+          count: this.openCount$,
+          status: this.openLabel
+        })
+      .end()
+      .start('span')
+        .tag(this.SummaryCard, {
+          count: this.pendingCount$,
+          status: this.pendingLabel
+        })
+      .end()
+      .start('span')
+        .tag(this.SummaryCard, {
+          count: this.solvedCount$,
+          status: this.solvedLabel
+        })
+      .end();
+    },
+  ],
+
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
   listeners: [
     {
       name: 'onDAOUpdate',

@@ -16,6 +16,7 @@ global.FOAM_FLAGS = { 'java': true, 'debug': true, 'js': false };
 
 require('../src/foam.js');
 require('../src/foam/nanos/nanos.js');
+require('../src/foam/support/support.js');
 
 var srcPath = __dirname + "/../src/";
 
@@ -57,7 +58,6 @@ externalFile.blacklist.forEach(function(cls) {
   'foam.core.AbstractInterface',
   'foam.core.Property',
   'foam.core.String',
-  'foam.core.Validatable',
 
   // These have hand written java impls so we don't want to clobber them.
   // TODO: Change gen.sh to prefer hand written java files over generated.

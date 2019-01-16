@@ -1,8 +1,20 @@
+<<<<<<< HEAD
+=======
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 
 foam.CLASS({
   package: 'foam.support.view',
   name: 'ReplyView',
+<<<<<<< HEAD
   extends: 'foam.u2.View',
+=======
+  extends: 'foam.u2.Controller',
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 
   documentation: 'Internal note for ticket detail view',
 
@@ -31,6 +43,7 @@ foam.CLASS({
     'viewData'
   ],
   
+<<<<<<< HEAD
   exports: [
     'as data'
   ],
@@ -110,6 +123,83 @@ foam.CLASS({
   ^ .foam-u2-UnstyledActionView:focus{
     outline: none;
   }`,
+=======
+  css: `
+    ^ {
+      height: 250px;
+      border-radius: 2px;
+      background-color: #ffffff;
+    }
+    ^ .firstdiv {
+      width: 1200px;
+      height: 10px;
+      padding-top:20px;
+    }
+    ^ .person {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      margin-left: 10px;
+      padding-left:10px;
+    }
+    ^ .Public-Reply {
+      font-family: Roboto;
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.33;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: #093649;
+      border: none;
+      background: none;
+      position: relative;
+      top: -25;
+    }
+    ^ .Internal-Note {
+      font-family: Roboto;
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.33;
+      letter-spacing: 0.2px;
+      text-align: left;
+      color: #093649;
+      border: none;
+      background: none;
+      position: relative;
+      top: -25;
+    }
+    ^ .Internal-Note:focus{
+      outline: none;
+    }
+    ^ .Public-Reply:focus{
+      outline: none;
+    }
+    ^ .Rectangle {
+      width: 820px;
+      height: 160px;
+      border-radius: 2px;
+      background-color: #ffffff;
+      border: solid 1px rgba(164, 179, 184, 0.5);
+      margin-left:77px;
+      margin-top:40px;
+    }
+    ^ .background-color{
+      background: #093649;
+      color:white
+    }
+    ^ .border{
+      border-bottom: 3px solid #1cc2b7;
+      font-weight:bold
+    }
+    ^ .foam-u2-UnstyledActionView:focus{
+      outline: none;
+    }
+  `,
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 
   methods: [
     function initE(){
@@ -124,6 +214,7 @@ foam.CLASS({
 
       this
       .addClass(this.myClass())
+<<<<<<< HEAD
       .start().addClass('bg')
         .startContext({ data: this })
           .start().addClass('firstdiv')
@@ -135,6 +226,17 @@ foam.CLASS({
         .endContext()
         .start(this.MESSAGE).addClass('Rectangle').enableClass('background-color', this.variant$).end()
       .end();
+=======
+      .startContext({ data: this })
+        .start().addClass('firstdiv')
+          .start({ class:'foam.u2.tag.Image', data:'images/person.svg' }).addClass('person').end()
+          .nbsp().nbsp().nbsp().nbsp().nbsp()
+          .start(this.PUBLIC_REPLY).addClass('Public-Reply').enableClass('border', this.variant$.map(function(a){ return !a; })).end()
+          .start(this.INTERNAL_NOTE).addClass('Internal-Note').enableClass('border', this.variant$).end()
+        .end()
+      .endContext()
+      .start(this.MESSAGE).addClass('Rectangle').enableClass('background-color', this.variant$).end();
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
     },
   ],
   actions: [
@@ -155,4 +257,8 @@ foam.CLASS({
       }              
     }
   ]
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665

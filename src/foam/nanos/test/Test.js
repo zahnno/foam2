@@ -9,7 +9,7 @@ foam.CLASS({
   name: 'Test',
   extends: 'foam.nanos.script.Script',
 
-  imports: [ 'testDAO as scriptDAO' ],
+  imports: ['testDAO as scriptDAO'],
 
   javaImports: [
     'bsh.Interpreter',
@@ -129,6 +129,7 @@ foam.CLASS({
         } catch (err) {
           this.failed += 1;
           this.output += err;
+          return Promise.reject(err);
         }
 
         ret.then(() => {
@@ -170,7 +171,7 @@ foam.CLASS({
           runTest(x);
         } catch (Throwable e) {
           setFailed(getFailed()+1);
-          ps.println();
+          ps.println("FAILURE: "+e.getMessage());
           e.printStackTrace(ps);
           e.printStackTrace();
         } finally {

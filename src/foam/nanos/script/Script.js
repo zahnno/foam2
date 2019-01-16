@@ -109,6 +109,7 @@ foam.CLASS({
       name: 'lastDuration',
       documentation: 'Date and time the script took to complete.',
       visibility: 'RO',
+      units: 'ms',
       tableCellFormatter: function(value) {
         this.start()
           .style({
@@ -150,7 +151,7 @@ foam.CLASS({
       name: 'code',
       view: {
         class: 'foam.u2.tag.TextArea',
-        rows: 20, cols: 80,
+        rows: 20, cols: 120,
         css: { 'font-family': 'monospace' }
       }
     },
@@ -160,7 +161,7 @@ foam.CLASS({
       visibility: 'RO',
       view: {
         class: 'foam.u2.tag.TextArea',
-        rows: 12, cols: 80,
+        rows: 12, cols: 120,
         css: { 'font-family': 'monospace' }
       },
       preSet: function(_, newVal) {
@@ -182,7 +183,7 @@ foam.CLASS({
     {
       class: 'String',
       name: 'notes',
-      view: { class: 'foam.u2.tag.TextArea', rows: 4, cols: 80 }
+      view: { class: 'foam.u2.tag.TextArea', rows: 4, cols: 144 }
     }
   ],
 
@@ -201,6 +202,7 @@ foam.CLASS({
           shell.set("x", x);
           shell.eval("runScript(String name) { script = x.get(\\"scriptDAO\\").find(name); if ( script != null ) eval(script.code); }");
           shell.eval("foam.core.X sudo(String user) { foam.util.Auth.sudo(x, (String) user); }");
+          shell.eval("foam.core.X sudo(Object id) { foam.util.Auth.sudo(x, id); }");
         } catch (EvalError e) {}
 
         return shell;
@@ -212,8 +214,13 @@ foam.CLASS({
         var log = function() {
           this.output += Array.from(arguments).join('') + '\n';
         }.bind(this);
-        with ( { log: log, print: log, x: this.__context__ } )
+        try {
+          with ({ log: log, print: log, x: this.__context__ })
           return Promise.resolve(eval(this.code));
+        } catch (err) {
+          this.output += err;
+          return Promise.reject(err);
+        }
       },
       args: [
         {
@@ -295,6 +302,10 @@ foam.CLASS({
           this.status = this.ScriptStatus.RUNNING;
           this.runScript().then(() => {
             this.status = this.ScriptStatus.UNSCHEDULED;
+            this.scriptDAO.put(this);
+          }).catch((err) => {
+            console.log(err);
+            this.status = this.ScriptStatus.ERROR;
             this.scriptDAO.put(this);
           });
         }

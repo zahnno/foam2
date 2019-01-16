@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 foam.CLASS({
   package: 'foam.support.modal',
   name: 'DeleteEmailSupportModal',
@@ -120,7 +129,11 @@ foam.CLASS({
           .end()
           .start(this.DELETE_BUTTON).addClass('Rectangle-8')
           .end()
+<<<<<<< HEAD
         .end()
+=======
+        .end();
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
       }
     ],
         
@@ -143,4 +156,8 @@ foam.CLASS({
         }
       }
     ]
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665

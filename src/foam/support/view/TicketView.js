@@ -1,12 +1,27 @@
+<<<<<<< HEAD
+=======
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 foam.CLASS({
   package: 'foam.support.view',
   name: 'TicketView',
   extends: 'foam.u2.View',
 
   requires: [
+<<<<<<< HEAD
     'foam.u2.ListCreateController',
     'foam.support.view.TicketDetailView',
     'foam.support.view.CreateTicketView'
+=======
+    'foam.support.view.CreateTicketView',
+    'foam.support.view.TicketDetailView',
+    'foam.u2.ListCreateController'
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
   ],
 
   imports: [ 'user' ,'createLabel'],
@@ -14,6 +29,7 @@ foam.CLASS({
   exports: [ 'hideSummary' ],
 
   css:`
+<<<<<<< HEAD
   ^ {
     width: 992px;
     margin: auto;
@@ -56,13 +72,64 @@ foam.CLASS({
   ^ .foam-u2-view-TableView-th-requestorName{
     width: 200px;
   }
+=======
+    ^ {
+      width: 970px;
+      margin: auto;
+    }
+    ^ .foam-support-view-SummaryCard{
+      width: 15.8%;
+    }
+    ^ .foam-u2-UnstyledActionView-create {
+      float: right;
+      width: 135px;
+      height: 40px;
+      color: white;
+      background-color: #59a5d5;
+      border: none;
+      margin: 0 20px 20px;
+    }
+    ^ .foam-u2-view-TableView-row:hover {
+      cursor: pointer;
+      background: %TABLEHOVERCOLOR%;
+    }
+    ^ .foam-u2-view-TableView-row {
+      height: 40px;
+    }
+    ^ .button-div{
+      height: 40px;
+    }
+    ^ .foam-u2-view-TableView td{
+      width: 8px;
+    }
+    ^ .foam-u2-ListCreateController{
+      top: 30px;
+      position: relative;
+    }
+    ^ .foam-u2-view-TableView-th-editColumns{
+      width: 10px;
+    }
+    ^ .foam-u2-view-TableView-th-id{
+      width: 125px;
+    }
+    ^ .foam-u2-view-TableView-th-requestorEmail{
+      width: 200px;
+    }
+    ^ .foam-u2-view-TableView-th-requestorName{
+      width: 200px;
+    }
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
   `,
 
   properties: [
     {
       class: 'Boolean',
+<<<<<<< HEAD
       name: 'hideSummary',
       value: false
+=======
+      name: 'hideSummary'
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
     }
   ],
 
@@ -77,7 +144,11 @@ foam.CLASS({
         class: 'foam.u2.ListCreateController',
         dao: this.user.tickets,
         detailView: this.TicketDetailView,
+<<<<<<< HEAD
         summaryView: this.TicketTableView.create(),
+=======
+        summaryView: this.TicketTableView,
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
         createDetailView: this.CreateTicketView,
         createLabel:'New Ticket',
         showActions: false

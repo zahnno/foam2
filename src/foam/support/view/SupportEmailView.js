@@ -1,7 +1,20 @@
+<<<<<<< HEAD
 foam.CLASS({
   package:'foam.support.view',
   name:'SupportEmailView',
   extends:'foam.u2.View',
+=======
+/**
+ * @license
+ * Copyright 2018 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
+
+foam.CLASS({
+  package:'foam.support.view',
+  name:'SupportEmailView',
+  extends: 'foam.u2.Controller',
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
 
   requires: [
     'foam.u2.dialog.Popup',
@@ -15,10 +28,13 @@ foam.CLASS({
     'user'
   ],
 
+<<<<<<< HEAD
   exports: [
     'as data'
   ],
 
+=======
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
   css:`
     ^ {
       padding: 2px;
@@ -155,7 +171,11 @@ foam.CLASS({
             .start(this.NEW_EMAIL).end()
           .end()
         .end()   
+<<<<<<< HEAD
       .end()
+=======
+      .end();
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
     }
   ],
 
@@ -163,8 +183,13 @@ foam.CLASS({
     {
       name: 'newEmail',
       label: 'New Email',
+<<<<<<< HEAD
       code: function(){
         this.ctrl.add(this.Popup.create().tag({ class: 'foam.support.modal.NewEmailSupportModal'}));
+=======
+      code: function() {
+        this.ctrl.add(this.Popup.create().tag({ class: 'foam.support.modal.NewEmailSupportModal' }));
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
       }
     }
   ],
@@ -201,7 +226,11 @@ foam.CLASS({
                 'status'
               ]
             })
+<<<<<<< HEAD
               .addClass(this.myClass('table'))
+=======
+            .addClass(this.myClass('table'))
+>>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
             .end();
         }
       ] 

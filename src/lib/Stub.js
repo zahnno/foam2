@@ -101,7 +101,12 @@ foam.CLASS({
   name: 'Stub',
   extends: 'Property',
   requires: [
+    'foam.box.Message',
+    'foam.box.RPCMessage',
+    'foam.box.RPCReturnBox',
+    'foam.box.ReplyBox',
     'foam.core.StubMethod',
+    'foam.core.StubNotification',
   ],
   properties: [
     'of',

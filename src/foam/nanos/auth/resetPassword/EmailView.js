@@ -22,7 +22,7 @@ foam.CLASS({
     'foam.u2.dialog.NotificationMessage'
   ],
 
-  css:`
+  css: `
     ^{
       width: 490px;
       margin: auto;
@@ -129,6 +129,13 @@ foam.CLASS({
     {
       class: 'EMail',
       name: 'email'
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'signInView',
+      factory: function() {
+        return { class: 'foam.nanos.auth.SignInView'};
+      }
     }
   ],
 
@@ -137,7 +144,7 @@ foam.CLASS({
   ],
 
   methods: [
-    function initE(){
+    function initE() {
     this.SUPER();
     var self = this;
 
@@ -147,14 +154,14 @@ foam.CLASS({
         .start().addClass('Forgot-Password').add('Forgot Password').end()
         .start().addClass('Message-Container')
         .start().addClass('Instructions-Text').add(this.Instructions).end()
-        .start().addClass('Email-Text').add("Email Address").end()
+        .start().addClass('Email-Text').add('Email Address').end()
         .start(this.EMAIL).addClass('full-width-input').end()
         .start(this.NEXT).addClass('Next-Button').end()
         .start('p').add('Remember your password?').end()
         .start('p').addClass('link')
           .add('Sign in.')
           .on('click', function() {
-            self.stack.push({ class: 'foam.nanos.auth.SignInView' });
+            self.stack.push( self.signInView );
           })
         .end()
       .end();
@@ -164,16 +171,16 @@ foam.CLASS({
   actions: [
     {
       name: 'next',
-      code: function (X) {
+      code: function(X) {
         var self = this;
         var user = this.User.create({ email: this.email });
-        this.resetPasswordToken.generateToken(null, user).then(function (result) {
+        this.resetPasswordToken.generateToken(null, user).then(function(result) {
           if ( ! result ) {
             throw new Error('Error generating reset token');
           }
-          self.stack.push(self.ResendView.create({ email: self.email }));;
+          self.stack.push(self.ResendView.create({ email: self.email }));
         })
-        .catch(function (err) {
+        .catch(function(err) {
           self.add(self.NotificationMessage.create({ message: err.message, type: 'error' }));
         });
       }
