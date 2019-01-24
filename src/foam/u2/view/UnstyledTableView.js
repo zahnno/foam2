@@ -113,18 +113,10 @@ foam.CLASS({
       documentation: 'Ignores selection by user.'
     },
     {
-      name: 'ascIcon',
-      documentation: 'HTML entity representing unicode Up-Pointing Triangle',
-      factory: function() {
-        return this.Entity.create({ name: '#9650' });
-      }
-    },
-    {
-      name: 'descIcon',
-      documentation: 'HTML entity representing unicode Down-Pointing Triangle',
-      factory: function() {
-        return this.Entity.create({ name: '#9660' });
-      }
+      class: 'String',
+      name: 'sortingIcon',
+      documentation: 'HTML entity representing unicode Down-Pointing Triangle',	
+      value: '/foam2/src/foam/u2/images/double-arrow.svg',
     },
     {
       name: 'vertMenuIcon',
@@ -192,10 +184,11 @@ foam.CLASS({
                   }).
                   on('click', function(e) { view.sortBy(column); }).
                   call(column.tableHeaderFormatter, [column]).
-                  add(' ', this.slot(function(order) {
-                    return column === order ? view.ascIcon :
-                        (view.Desc.isInstance(order) && order.arg1 === column) ? view.descIcon : ''
-                  }, view.order$)).
+                  callIf(column.label != '', function() {
+                    this.start('img')
+                      .attr('src', view.sortingIcon$)
+                    .end();
+                  }).
                 end();
               }).
               call(function() {
