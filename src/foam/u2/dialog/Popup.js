@@ -66,7 +66,13 @@ foam.CLASS({
  `,
 
   properties: [
-    [ 'backgroundColor', '#fff' ]
+    [ 'backgroundColor', '#fff' ],
+    {
+      name: 'closeable',
+      class: 'Boolean',
+      value: true
+    },
+    'onClose'
   ],
 
   methods: [
@@ -79,7 +85,7 @@ foam.CLASS({
         .addClass(this.myClass('container'))
         .start()
             .addClass(this.myClass('background'))
-            .on('click', this.close)
+            .on('click', this.closeable ? this.close : null)
         .end()
         .start()
             .call(function() { content = this; })
@@ -99,6 +105,9 @@ foam.CLASS({
 
   listeners: [
     function close() {
+      if ( this.onClose ) {
+        this.onClose();
+      }
       this.remove();
     }
   ]

@@ -24,7 +24,6 @@ foam.CLASS({
 =======
 >>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
     'foam.support.view.ReplyView',
-    
   ],
 
   implements: [
@@ -42,7 +41,7 @@ foam.CLASS({
 >>>>>>> 1281ad28a23671fa61657301b9b87efd61e1c665
     'user'
   ],
-  
+
   exports: [
     'as data',
     'viewData'

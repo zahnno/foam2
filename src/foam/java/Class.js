@@ -114,6 +114,19 @@ foam.CLASS({
   ],
 
   methods: [
+    function fromModel(model) {
+      this.name = model.name;
+      this.package = model.package;
+      this.abstract = model.abstract;
+
+      if ( model.name != 'AbstractFObject' ) {
+        this.extends = model.extends  === 'FObject' ?
+          'foam.core.AbstractFObject' : model.extends;
+      } else {
+        this.implements = [ 'foam.core.FObject' ]
+      }
+    },
+
     function getField(name) {
       for ( var i  = 0 ; this.fields && i < this.fields.length ; i++ ) {
         if ( this.fields[i].name === name ) return this.fields[i];
@@ -134,7 +147,7 @@ foam.CLASS({
 
     function field(f) {
       if ( ! foam.core.FObject.isInstance(f) ) {
-        f = ( f.class ? this.lookup(f.class) : foam.java.Field ).create(f, this);
+        f = ( f.class ? this.__context__.lookup(f.class) : foam.java.Field ).create(f, this);
       }
 
       this.fields.push(f);
@@ -199,7 +212,7 @@ foam.CLASS({
       this.constants.forEach(function(c) { o.out(c, '\n'); });
 
       this.fields.sort(function(o1, o2) {
-        return o1.order - o2.order
+        return foam.Number.compare(o1.order, o2.order);
       }).forEach(function(f) { o.out(f, '\n'); });
 
       this.methods.forEach(function(f) { o.out(f, '\n'); });
@@ -216,4 +229,4 @@ foam.CLASS({
       return output.buf_;
     }
   ]
-});
+})
