@@ -22,6 +22,7 @@ foam.CLASS({
   ],
 
   javaImports: [
+    'java.util.regex.Pattern',
     'foam.core.FObject',
     'foam.core.X',
     'foam.dao.DAO',
@@ -69,6 +70,28 @@ foam.CLASS({
   //   5. lastName
   //   6. legalName
   //   7. lastModified
+
+  messages: [
+    { name: 'INVALID_EMPTY_VALUE', message: ' required.' },
+    { name: 'INVALID_LONG_VALUE', message: ' cannot exceed 70 characters.' },
+    { name: 'INVALID_NUMBER_VALUE', message: ' cannot contain numbers.' }
+  ],
+
+  constants: [
+    {
+      name: 'NO_NUMBER_REGEX',
+      type: 'Regex',
+      value: /\d/g,
+      javaValue: `Pattern.compile("/\d/");`
+    },
+    {
+      name: 'EMAIL_REGEX',
+      type: 'Regex',
+      value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g,
+      javaValue: `Pattern.compile("^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/")`
+    }
+  ],
+
   properties: [
     {
       class: 'Long',
@@ -98,13 +121,27 @@ foam.CLASS({
       name: 'firstName',
       validateObj: function(firstName) {
         if ( ! firstName.trim() ){
-          return 'First Name Required.'
+          return this.INVALID_EMPTY_FIRST_NAME;
         } if ( firstName.length > 70 ) {
           return 'First name cannot exceed 70 characters.';
         } if( /\d/.test(this.firstName) ) {
           return 'First name cannot contain numbers';
         } 
-      }
+      },
+      javaValidateObj: `
+        String firstName = ((foam.nanos.auth.User) obj).getFirstName();
+        String propName = foam.nanos.auth.User.FIRST_NAME.getLabel();
+
+        if ( SafetyUtil.isEmpty(firstName) ) { 
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_EMPTY_VALUE);
+        }
+        if ( firstName.length() > 70 ) {
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_LONG_VALUE);
+        }
+        if ( ! foam.nanos.auth.User.NO_NUMBER_REGEX.matcher(firstName).matches()) {
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_NUMBER_VALUE);
+        }
+      `
     },
     {
       class: 'String',
@@ -121,7 +158,21 @@ foam.CLASS({
         } if( /\d/.test(this.lastName) ) {
           return 'Last name cannot contain numbers';
         } 
-      }
+      },
+      javaValidateObj: `
+        String lastName = ((foam.nanos.auth.User) obj).getLastName();
+        String propName = foam.nanos.auth.User.LAST_NAME.getLabel();
+
+        if ( SafetyUtil.isEmpty(lastName) ) { 
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_EMPTY_VALUE);
+        }
+        if ( lastName.length() > 70 ) {
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_LONG_VALUE);
+        }
+        if ( ! foam.nanos.auth.User.NO_NUMBER_REGEX.matcher(firstName).matches()) {
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_NUMBER_VALUE);
+        }
+      `
     },
     'legalName',
     {
@@ -137,7 +188,18 @@ foam.CLASS({
         } if (!(organization.trim())) {
           return 'Company Name Required.';
         }
-      }
+      },
+      javaValidateObj: `
+        String organization = ((foam.nanos.auth.User) obj).getOrganization();
+        String propName = foam.nanos.auth.User.ORGANIZATION.getLabel();
+
+        if ( SafetyUtil.isEmpty(organization) ) { 
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_EMPTY_VALUE);
+        }
+        if ( organization.length() > 70 ) {
+          throw new IllegalStateException(propName + foam.nanos.auth.User.INVALID_LONG_VALUE);
+        }
+    `
     },
     {
       class: 'String',
@@ -159,12 +221,11 @@ foam.CLASS({
       `email_ = val.toLowerCase();
        emailIsSet_ = true;`,
       validateObj: function (email) {
-        var emailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         
         if (!(email.trim())) {
           return 'Email Required.';
         }
-        if ( ! emailRegex.test(email.trim()) ) {
+        if ( ! this.EMAIL_REGEX.test(email.trim()) ) {
           return 'Invalid email address.';
         } 
       }
