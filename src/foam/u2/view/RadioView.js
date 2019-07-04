@@ -24,13 +24,28 @@ foam.CLASS({
     ^ label {
       position: relative;
     }
+
+    ^horizontal-radio {
+      display: flex;
+    }
   `,
+
+  properties: [
+    {
+      class: 'Boolean',
+      name: 'isHorizontal',
+      value: false
+    }
+  ],
 
   methods: [
     function initE() {
       // If no item is selected, and data has not been provided, select the 0th
       // entry.
-      this.addClass(this.myClass());
+      this
+        .addClass(this.myClass())
+        .enableClass(this.myClass('horizontal-radio'), this.isHorizontal);
+
       if ( ! this.data && ! this.index ) {
         this.index = 0;
       }
@@ -50,17 +65,18 @@ foam.CLASS({
 
       this.add(this.choices.map(function(c) {
         return this.E('div').
+          // TODO: why is the radio item getting assigned the same class as the radio whole
           addClass(this.myClass()).
           start('input').
             attrs({
               type: 'radio',
-              name: this.id,
+              name: c[0] + '',
               value: c[0],
               checked: self.slot(function (data) { return data === c[0]; })
             }).
             setID(id = self.NEXT_ID()).
             on('change', function(evt) {
-              self.data = evt.srcElement.value;
+              self.data = c[0];
             }).
           end().
           start('label').

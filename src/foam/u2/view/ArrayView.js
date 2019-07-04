@@ -9,13 +9,24 @@ foam.CLASS({
   name: 'ArrayView',
   extends: 'foam.u2.View',
   requires: [
-    'foam.u2.DetailView'
+    'foam.u2.layout.Cols',
+    'foam.u2.layout.Rows'
   ],
   exports: [ 'updateData' ],
+  properties: [
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'valueView',
+      value: { class: 'foam.u2.view.AnyView' }
+    }
+  ],
   actions: [
     {
       name: 'addRow',
       label: 'Add',
+      isAvailable: function(controllerMode) {
+        return controllerMode !== foam.u2.ControllerMode.VIEW;
+      },
       code: function() {
         this.data[this.data.length] = '';
         this.updateData();
@@ -25,7 +36,11 @@ foam.CLASS({
   classes: [
     {
       name: 'Row',
-      imports: [ 'data', 'updateData' ],
+      imports: [ 
+        'controllerMode?',
+        'data',
+        'updateData'
+      ],
       properties: [
         {
           class: 'Int',
@@ -34,7 +49,6 @@ foam.CLASS({
         },
         {
           name: 'value',
-          view: { class: 'foam.u2.view.AnyView' },
           postSet: function(_, n) {
             this.data[this.index] = n;
           }
@@ -43,6 +57,10 @@ foam.CLASS({
       actions: [
         {
           name: 'remove',
+          label: 'X',
+          isAvailable: function(controllerMode) {
+            return controllerMode !== foam.u2.ControllerMode.VIEW;
+          },
           code: function() {
             this.data.splice(this.index, 1);
             this.updateData();
@@ -66,12 +84,22 @@ foam.CLASS({
     function initE() {
       var self = this;
       this
-        .add(this.slot(function(data) {
-          return self.E().forEach(data, function(e, i) {
-            var row = self.Row.create({ index: i, value: e });
-            this.start(self.DetailView, { data: row, showActions: true }).end();
-            row.onDetach(row.sub(self.updateData));
-          });
+        .add(this.slot(function(data, valueView) {
+          return self.E()
+            .start(self.Rows)
+              .forEach(data, function (e, i) {
+                var row = self.Row.create({ index: i, value: e });
+                this
+                  .startContext({ data: row })
+                    .start(self.Cols)
+                      .start(valueView, { data$: row.value$ })
+                        .style({ flex: 1 })
+                      .end()
+                      .add(self.Row.REMOVE)
+                    .end()
+                  .endContext();
+                row.onDetach(row.sub(self.updateData));
+              });
         }))
         .startContext({ data: this }).add(this.ADD_ROW).endContext();
     }

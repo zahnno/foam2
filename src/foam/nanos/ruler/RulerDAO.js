@@ -12,19 +12,20 @@ foam.CLASS({
   documentation: `
     RulerDAO selects all the rules that can be applied to specific dao depending on type of operation(create/update/remove). Selected rules are applied
     in the order specified in rule.priority until all are executed or until one of the rules forces execution to stop.
-    See RulerDAOTest for examples. 
+    See RulerDAOTest for examples.
   `,
 
   javaImports: [
     'foam.core.Detachable',
     'foam.core.FObject',
+    'foam.core.ReadOnlyDAOContext',
+    'foam.core.X',
     'foam.dao.AbstractSink',
     'foam.dao.ArraySink',
     'foam.dao.DAO',
+    'foam.mlang.order.Desc',
     'foam.mlang.predicate.Predicate',
     'foam.mlang.sink.GroupBy',
-    'java.util.ArrayList',
-    'java.util.Collections',
     'java.util.List',
     'java.util.Map',
     'static foam.mlang.MLang.*'
@@ -44,112 +45,100 @@ foam.CLASS({
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'createBefore',
-      javaFactory: `
-      return AND(
-        OR(
-          EQ(Rule.OPERATION, Operations.CREATE),
-          EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
-        ),
-        EQ(Rule.AFTER, false)
-      );`
+      javaFactory: `return AND(
+  OR(
+    EQ(Rule.OPERATION, Operations.CREATE),
+    EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
+  ),
+  EQ(Rule.AFTER, false)
+);`
     },
     {
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'createAfter',
-      javaFactory: `
-      return AND(
-        OR(
-          EQ(Rule.OPERATION, Operations.CREATE),
-          EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
-        ),
-        EQ(Rule.AFTER, true)
-      );`
+      javaFactory: `return AND(
+  OR(
+    EQ(Rule.OPERATION, Operations.CREATE),
+    EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
+  ),
+  EQ(Rule.AFTER, true)
+);`
     },
     {
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'updateBefore',
-      javaFactory: `
-      return AND(
-        OR(
-          EQ(Rule.OPERATION, Operations.UPDATE),
-          EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
-        ),
-        EQ(Rule.AFTER, false)
-      );`
+      javaFactory: `return AND(
+  OR(
+    EQ(Rule.OPERATION, Operations.UPDATE),
+    EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
+  ),
+  EQ(Rule.AFTER, false)
+);`
     },
     {
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'updateAfter',
-      javaFactory: `
-      return AND(
-        OR(
-          EQ(Rule.OPERATION, Operations.UPDATE),
-          EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
-        ),
-        EQ(Rule.AFTER, true)
-      );`
+      javaFactory: `return AND(
+  OR(
+    EQ(Rule.OPERATION, Operations.UPDATE),
+    EQ(Rule.OPERATION, Operations.CREATE_OR_UPDATE)
+  ),
+  EQ(Rule.AFTER, true)
+);`
     },
     {
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'removeBefore',
-      javaFactory: `
-      return AND(
-        EQ(Rule.OPERATION, Operations.REMOVE),
-        EQ(Rule.AFTER, false)
-      );`
+      javaFactory: `return AND(
+  EQ(Rule.OPERATION, Operations.REMOVE),
+  EQ(Rule.AFTER, false)
+);`
     },
     {
       class: 'FObjectProperty',
       of: 'foam.mlang.predicate.Predicate',
       name: 'removeAfter',
-      javaFactory: `
-      return AND(
-        EQ(Rule.OPERATION, Operations.REMOVE),
-        EQ(Rule.AFTER, true)
-      );`
+      javaFactory: `return AND(
+  EQ(Rule.OPERATION, Operations.REMOVE),
+  EQ(Rule.AFTER, true)
+);`
     },
     {
       class: 'Map',
       name: 'rulesList',
-      javaFactory: `
-      return new java.util.HashMap<Predicate, GroupBy>();
-      `
+      javaFactory: `return new java.util.HashMap<Predicate, GroupBy>();`
     }
   ],
 
   methods: [
     {
       name: 'put_',
-      javaCode: `
-      FObject oldObj = getDelegate().find_(x, obj);
-      Map rulesList = getRulesList();
-      if ( oldObj == null ) {
-        applyRules(x, obj, oldObj, (GroupBy) rulesList.get(getCreateBefore()));
-      } else {
-        applyRules(x, obj, oldObj, (GroupBy) rulesList.get(getUpdateBefore()));
-      }
-      FObject ret =  getDelegate().put_(x, obj);
-      if ( oldObj == null ) {
-        applyRules(x, ret, oldObj, (GroupBy) rulesList.get(getCreateAfter()));
-      } else {
-        applyRules(x, ret, oldObj, (GroupBy) rulesList.get(getUpdateAfter()));
-      }
-      return ret;
-      `
+      javaCode: `FObject oldObj = getDelegate().find_(x, obj);
+Map rulesList = getRulesList();
+if ( oldObj == null ) {
+  applyRules(x, obj, oldObj, (GroupBy) rulesList.get(getCreateBefore()));
+} else {
+  applyRules(x, obj, oldObj, (GroupBy) rulesList.get(getUpdateBefore()));
+}
+FObject ret =  getDelegate().put_(x, obj);
+if ( oldObj == null ) {
+  applyRules(x, ret, oldObj, (GroupBy) rulesList.get(getCreateAfter()));
+} else {
+  applyRules(x, ret, oldObj, (GroupBy) rulesList.get(getUpdateAfter()));
+}
+return ret;`
     },
     {
       name: 'remove_',
-      javaCode: `
-      FObject oldObj = getDelegate().find_(x, obj);
-      applyRules(x, obj, oldObj, (GroupBy) getRulesList().get(getRemoveBefore()));
-      FObject ret =  getDelegate().remove_(x, obj);
-      applyRules(x, ret, oldObj, (GroupBy) getRulesList().get(getRemoveAfter()));
-      return ret;
-      `
+      javaCode: `FObject oldObj = getDelegate().find_(x, obj);
+applyRules(x, obj, oldObj, (GroupBy) getRulesList().get(getRemoveBefore()));
+FObject ret =  getDelegate().remove_(x, obj);
+applyRules(x, ret, oldObj, (GroupBy) getRulesList().get(getRemoveAfter()));
+return ret;`
     },
     {
       name: 'applyRules',
@@ -171,15 +160,12 @@ foam.CLASS({
           type: 'foam.mlang.sink.GroupBy'
         }
       ],
-      javaCode: `
-      for ( Object key : sink.getGroupKeys() ) {
-        List<Rule> group = ((ArraySink) sink.getGroups().get(key)).getArray();
-        if ( ! group.isEmpty() ) {
-          Collections.sort(group, new foam.mlang.order.Desc(Rule.PRIORITY));
-          new RuleEngine(x, this).execute(group, obj, oldObj);
-        }
-      }
-      `
+      javaCode: `for ( Object key : sink.getGroupKeys() ) {
+  List<Rule> group = ((ArraySink) sink.getGroups().get(key)).getArray();
+  if ( ! group.isEmpty() ) {
+    new RuleEngine(x, getX(), this).execute(group, obj, oldObj);
+  }
+}`
     },
     {
       name: 'updateRules',
@@ -189,82 +175,90 @@ foam.CLASS({
           type: 'Context'
         }
       ],
-      javaCode: `DAO ruleDAO = ((DAO) x.get("ruleDAO")).where(EQ(Rule.DAO_KEY, getDaoKey()));
-Map rulesList = getRulesList();
-GroupBy createdBefore = (GroupBy) ruleDAO.where(getCreateBefore()).select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()));
-rulesList.put(getCreateBefore(), createdBefore);
-GroupBy updatedBefore = (GroupBy) ruleDAO.where(getUpdateBefore()).select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()));
-rulesList.put(getUpdateBefore(), updatedBefore);
-GroupBy createdAfter = (GroupBy) ruleDAO.where(getCreateAfter()).select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()));
-rulesList.put(getCreateAfter(), createdAfter);
-GroupBy updatedAfter = (GroupBy) ruleDAO.where(getUpdateAfter()).select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()));
-rulesList.put(getUpdateAfter(), updatedAfter);
-GroupBy removedBefore = (GroupBy) ruleDAO.where(getRemoveBefore()).select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()));
-rulesList.put(getRemoveBefore(), removedBefore);
-GroupBy removedAfter = (GroupBy) ruleDAO.where(getRemoveAfter()).select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()));
-rulesList.put(getRemoveAfter(), removedAfter);
+      javaCode: `DAO ruleDAO = ((DAO) x.get("ruleDAO")).where(
+  EQ(Rule.DAO_KEY, getDaoKey())
+);
+ruleDAO.listen(
+  new UpdateRulesListSink.Builder(getX())
+    .setDao(this)
+    .build()
+  , null
+);
 
-ruleDAO.listen(new AbstractSink() {
-  @Override
-  public void put(Object obj, Detachable sub) {
-    Map rulesList = getRulesList();
-    Rule rule = (Rule) obj;
-    if ( ! rule.getDaoKey().equals(getDaoKey()) ) {
-      return;
-    }
-    String ruleGroup = rule.getRuleGroup();
-    for ( Object key : rulesList.keySet() ) {
-      if ( ((Predicate) key).f(obj) ) {
-        GroupBy group = (GroupBy) rulesList.get(key);
-        if ( group.getGroupKeys().contains(ruleGroup) ) {
-          ArrayList rules = (ArrayList) ((ArraySink)group.getGroups().get(ruleGroup)).getArray();
-          Rule foundRule = Rule.findById(rules, rule.getId());
-          if ( foundRule != null ) {
-            rules.remove(foundRule);
-            rules.add(foundRule.updateRule(rule));
-          } else {
-            rules.add(obj);
-          }
-        } else {
-          group.putInGroup_(sub, ruleGroup, obj);
-        }
+ruleDAO = ruleDAO.where(
+  EQ(Rule.ENABLED, true)
+).orderBy(new Desc(Rule.PRIORITY));
+ruleDAO.select(new AbstractSink(new ReadOnlyDAOContext(getX())) {
+      @Override
+      public void put(Object obj, Detachable sub) {
+        Rule rule = (Rule) obj;
+        rule.setX(getX());
       }
-    }
-  }
-  
-  @Override
-  public void remove(Object obj, Detachable sub) {
-    Map rulesList = getRulesList();
-    Rule rule = (Rule) obj;
-    if ( rule.getDaoKey() != getDaoKey() ) {
-      return;
-    }
-    String ruleGroup = rule.getRuleGroup();
-    for ( Object key : rulesList.keySet() ) {
-      if ( ((Predicate) key).f(obj) ) {
-        GroupBy group = (GroupBy) rulesList.get(key);
-        if ( group.getGroupKeys().contains(ruleGroup) ) {
-          ArrayList rules = (ArrayList) ((ArraySink)group.getGroups().get(ruleGroup)).getArray();
-          Rule foundRule = Rule.findById(rules, rule.getId());
-          if ( foundRule != null ) {
-            rules.remove(foundRule);
-          }
-        }
-      }
-    }
-  }
-}, null);
-        `
+    });
+addRuleList(ruleDAO, getCreateBefore());
+addRuleList(ruleDAO, getUpdateBefore());
+addRuleList(ruleDAO, getRemoveBefore());
+addRuleList(ruleDAO, getCreateAfter());
+addRuleList(ruleDAO, getUpdateAfter());
+addRuleList(ruleDAO, getRemoveAfter());`
     },
     {
       name: 'cmd_',
-      javaCode: `
-        if ( PUT_CMD == obj ) {
-          getDelegate().put((FObject) x.get("OBJ"));
-          return true;
+      javaCode: `if ( PUT_CMD == obj ) {
+  getDelegate().put((FObject) x.get("OBJ"));
+  return true;
+}
+if ( ! ( obj instanceof RulerProbe ) ) return getDelegate().cmd_(x, obj);
+  RulerProbe probe = (RulerProbe) obj;
+  switch ( probe.getOperation() ) {
+    case UPDATE :
+    probeRules(x, probe, getUpdateBefore());
+      break;
+    case CREATE :
+      probeRules(x, probe, getCreateBefore());
+      break;
+    case REMOVE :
+      probeRules(x, probe, getRemoveBefore());
+      break;
+    default :
+      throw new RuntimeException("Unsupported operation type " + probe.getOperation() + " on dao.cmd(RulerProbe)");
+    }
+    return probe;`
+    },
+    {
+      name: 'probeRules',
+      args: [
+        { name: 'x', type: 'X' },
+        { name: 'probe', type: 'RulerProbe' },
+        { name: 'predicate', type: 'foam.mlang.predicate.Predicate' }
+      ],
+      javaCode: `GroupBy groups;
+RuleEngine engine = new RuleEngine(x, getX(), this);
+Map rulesList = getRulesList();
+FObject oldObj = getDelegate().find_(x, probe.getObject());
+groups = (GroupBy)rulesList.get(predicate);
+for ( Object key : groups.getGroupKeys() ) {
+  List<Rule> rules = ((ArraySink)(groups.getGroups().get(key))).getArray();
+  engine.probe(rules, probe, (FObject)probe.getObject(), oldObj);
+}`
+    },
+    {
+      name: 'addRuleList',
+      args: [
+        {
+          name: 'dao',
+          type: 'foam.dao.DAO'
+        },
+        {
+          name: 'predicate',
+          type: 'foam.mlang.predicate.Predicate'
         }
-        return getDelegate().cmd(obj);
-      `
+      ],
+      javaCode: `getRulesList().put(
+     predicate,
+     dao.where(predicate)
+       .select(GROUP_BY(Rule.RULE_GROUP, new ArraySink()))
+   );`
     }
   ],
 
@@ -273,13 +267,14 @@ ruleDAO.listen(new AbstractSink() {
       name: 'javaExtras',
       buildJavaClass: function(cls) {
         cls.extras.push(`
-         public RulerDAO(foam.core.X x, foam.dao.DAO delegate, String serviceName) {
-           setX(x);
-           setDelegate(delegate);
-           setDaoKey(serviceName);
-           updateRules(x);
-         }
-        `);
+    public RulerDAO(foam.core.X x, foam.dao.DAO delegate, String serviceName) {
+      setX(x);
+      setDelegate(delegate);
+      setDaoKey(serviceName);
+      updateRules(x);
+    }
+      `
+         );
       }
     }
   ]
