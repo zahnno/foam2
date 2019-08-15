@@ -71,8 +71,12 @@ FOAM_FILES([
   { name: "foam/core/Enum" },
   { name: "foam/core/JSON" },
   { name: "foam/core/XML" },
-  { name: "foam/lib/csv/CSV" },
   { name: "foam/lib/csv/CSVParser" },
+  { name: "foam/lib/csv/CSVOutputter" },
+  { name: "foam/lib/csv/CSVOutputterImpl" },
+  { name: "foam/lib/csv/ProxyCSVOutputter" },
+  { name: "foam/lib/csv/PrefixedCSVOutputter" },
+  { name: "foam/lib/csv/DynamicHeaderCSVParser" },
   { name: "foam/parse/StringPStream" },
   { name: "foam/parse/ErrorReportingPStream" },
   { name: "foam/parse/TrapPStream" },
@@ -268,6 +272,7 @@ FOAM_FILES([
   { name: "foam/dao/NoDisjunctionDAO" },
   { name: "foam/dao/NoNeqDAO" },
   { name: "foam/dao/FixedSizeDAO" },
+  { name: "foam/dao/PutOnlyDAO" },
   { name: "foam/glang/glang" },
   { name: "foam/parse/QueryParser" },
   { name: "foam/parse/QueryParserUserTest" },
@@ -422,6 +427,9 @@ FOAM_FILES([
   { name: "foam/u2/history/HistoryItemView", flags: ['web'] },
   { name: "foam/u2/history/HistoryView", flags: ['web'] },
   { name: "foam/u2/view/FObjectView", flags: ['web'] },
+  { name: "foam/u2/view/CollapseableDetailView", flags: ['web'] },
+  { name: "foam/u2/view/ReferenceArrayView", flags: ['web'] },
+  { name: "foam/u2/view/DraftDetailView", flags: ['web'] },
   { name: "foam/u2/view/FObjectArrayView", flags: ['web'] },
   { name: "foam/u2/view/ChoiceView", flags: ['web'] },
   { name: "foam/u2/view/ChoiceWithOtherView", flags: ['web'] },
@@ -457,6 +465,7 @@ FOAM_FILES([
   { name: "foam/u2/EnumView", flags: ['web'] },
   { name: "foam/u2/ClassView", flags: ['web'] },
   { name: "foam/u2/view/ReferenceView", flags: ['web'] },
+  { name: "foam/u2/view/FullReferenceView" },
   { name: "foam/u2/tag/Card", flags: ['web'] },
   { name: "foam/u2/dialog/Popup", flags: ['web'] },
   { name: "foam/u2/dialog/NotificationMessage", flags: ['web'] },
@@ -573,6 +582,7 @@ FOAM_FILES([
   { name: "foam/lib/json/ClassReferenceParserTest" },
   { name: "foam/lib/parse/Parser" },
   { name: "foam/lib/parse/PStream" },
+  { name: "foam/lib/parse/BlobPStream" },
   { name: "foam/crypto/hash/Hasher" },
   { name: "foam/crypto/hash/Hashable" },
   { name: "foam/crypto/hash/HashableTest" },
@@ -591,8 +601,10 @@ FOAM_FILES([
   { name: "foam/flow/DocumentationFolderDAO" },
 
   { name: "org/chartjs/Lib" },
+  { name: "org/chartjs/ChartCView" },
   { name: "org/chartjs/AbstractChartCView" },
   { name: "org/chartjs/AbstractChartView" },
+  { name: "org/chartjs/HorizontalBarDAOChartView" },
   { name: "org/chartjs/CandlestickDAOChartView" },
   { name: "org/chartjs/PieDAOChartView" },
   { name: "org/chartjs/Pie" },
@@ -638,8 +650,10 @@ FOAM_FILES([
 
   { name: "foam/u2/layout/DisplayWidth" },
   { name: "foam/u2/layout/Layouts" },
-  { name: "foam/u2/layout/Cards" },
+  { name: "foam/u2/layout/Grid" },
   { name: "foam/u2/layout/Card" },
+  { name: "foam/u2/layout/GUnit" },
+  { name: "foam/u2/layout/GridColumns" },
 
   { name: "foam/comics/v2/CannedQuery" },
   { name: "foam/comics/v2/DAOBrowseControllerView" },
@@ -659,5 +673,11 @@ FOAM_FILES([
   { name: "foam/u2/detail/SectionedDetailView" },
   { name: "foam/u2/detail/VerticalDetailView" },
   { name: "foam/u2/detail/WizardSectionsView" },
-  { name: "foam/u2/detail/SectionedDetailPropertyView" }
+  { name: "foam/u2/detail/SectionedDetailPropertyView" },
+
+  // Strategy
+  { name: "foam/strategy/StrategyReference" },
+  { name: "foam/strategy/StrategizerService" },
+  { name: "foam/strategy/BasicStrategizer" },
+  { name: "foam/strategy/ClientStrategizerService" }
 ]);

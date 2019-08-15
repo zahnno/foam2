@@ -50,7 +50,8 @@ foam.CLASS({
     ^browse-view-container {
       margin: auto;
       border-bottom: solid 1px #e7eaec;
-      margin: 20px 0px 72px 0px;
+      margin: 0px 0px 72px 0px;
+      box-sizing: border-box;
     }
 
     ^canned-queries {
@@ -81,9 +82,14 @@ foam.CLASS({
     'stack?'
   ],
   exports: [
-    'dblclick'
+    'dblclick',
+    'filteredTableColumns',
   ],
   properties: [
+    {
+      class: 'StringArray',
+      name: 'filteredTableColumns'
+    },
     {
       class: 'foam.dao.DAOProperty',
       name: 'data'
@@ -94,6 +100,24 @@ foam.CLASS({
       name: 'config',
       factory: function() {
         return this.DAOControllerConfig.create({ dao: this.data });
+      }
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'summaryView',
+      factory: function() {
+        return {
+          class: 'foam.u2.view.ScrollTableView'
+        };
+      }
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'cannedQueriesView',
+      factory: function() {
+        return {
+          class: 'foam.u2.view.TabChoiceView'
+        };
       }
     },
     {
@@ -141,7 +165,7 @@ foam.CLASS({
       this.addClass(this.myClass());
       this.SUPER();
       this
-        .add(self.slot(function(config$cannedQueries) {
+        .add(this.slot(function(data, config$cannedQueries, config$defaultColumns) {
           return self.E()
             .start(self.Rows)
               .callIf(config$cannedQueries.length >= 1, function() {
@@ -151,7 +175,7 @@ foam.CLASS({
                     .start(self.Cols)
                       .callIf(config$cannedQueries.length > 1, function() {
                         this
-                          .start(self.TabChoiceView, {
+                          .start(self.cannedQueriesView, {
                             choices: config$cannedQueries.map(o => [o.predicate, o.label]),
                             data$: self.predicate$
                           })
@@ -173,9 +197,10 @@ foam.CLASS({
                   .end()
                 .endContext()
               .end()
-              .start(self.ScrollTableView, {
+              .start(self.summaryView, {
                 data: self.predicatedDAO$proxy,
-                enableDynamicTableHeight: false
+                enableDynamicTableHeight: false,
+                columns: config$defaultColumns
               })
                 .addClass(self.myClass('browse-view-container'))
               .end()

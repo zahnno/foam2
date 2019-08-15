@@ -6,14 +6,47 @@
 
 foam.CLASS({
   package: 'foam.glang',
-  name: 'EndOfTimeSpan',
+  name: 'AbstractDateGlang',
   extends: 'foam.mlang.AbstractExpr',
-  implements: [ 'foam.core.Serializable' ],
+  abstract: true,
+  implements: [
+    'foam.core.Serializable',
+    'foam.mlang.order.Comparator',
+  ],
   properties: [
     {
       class: 'foam.mlang.ExprProperty',
       name: 'delegate'
+    }
+  ],
+  methods: [
+    {
+      name: 'createStatement',
+      javaCode: 'return "";'
     },
+    {
+      name: 'prepareStatement',
+      javaCode: '// noop'
+    },
+    {
+      name: 'compare',
+      code: function(o1, o2) {
+        return foam.Date.compare(this.f(o1), this.f(o2));
+      },
+      javaCode: `
+        java.util.Date date1 = (java.util.Date) f(o1);
+        java.util.Date date2 = (java.util.Date) f(o2);
+        return date1.compareTo(date2);
+      `
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.glang',
+  name: 'EndOfTimeSpan',
+  extends: 'foam.glang.AbstractDateGlang',
+  properties: [
     {
       class: 'Long',
       name: 'timeSpanMs'
@@ -39,14 +72,7 @@ foam.CLASS({
 foam.CLASS({
   package: 'foam.glang',
   name: 'EndOfDay',
-  extends: 'foam.mlang.AbstractExpr',
-  implements: [ 'foam.core.Serializable' ],
-  properties: [
-    {
-      class: 'foam.mlang.ExprProperty',
-      name: 'delegate'
-    }
-  ],
+  extends: 'foam.glang.AbstractDateGlang',
   methods: [
     {
       name: 'f',
@@ -74,20 +100,15 @@ return java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()
 foam.CLASS({
   package: 'foam.glang',
   name: 'EndOfWeek',
-  extends: 'foam.mlang.AbstractExpr',
-  implements: [ 'foam.core.Serializable' ],
+  extends: 'foam.glang.AbstractDateGlang',
   properties: [
-    {
-      class: 'foam.mlang.ExprProperty',
-      name: 'delegate'
-    },
     {
       class: 'Int',
       name: 'startOfWeek',
       documentation: 'Value between 0 - Sunday and 6 - Saturday inclusive.  Indicates which day is considered the first day of a new week.',
       min: 0,
       max: 6,
-      value: 6
+      value: 0
     }
   ],
   methods: [
@@ -95,12 +116,18 @@ foam.CLASS({
       name: 'f',
       code: function(obj) {
         var ts = new Date(this.delegate.f(obj));
-        ts.setDate(ts.getDate() + 5 + this.startOfWeek - ts.getDay());
+
+        var date = ts.getDate();
+        var endOfWeek = (this.startOfWeek + 6) % 7;
+        var day = ts.getDay();
+        var daysToEndOfWeek = (endOfWeek - day + 7) % 7;
+        
+        ts.setDate(date + daysToEndOfWeek);
+
         ts.setHours(23, 59, 59);
         ts.setMilliseconds(999);
 
         return ts;
-        return ts.getTime() > Date.now() ? new Date() : ts;
       },
       javaCode: `
 // Convert to LocalDate
@@ -123,14 +150,7 @@ return java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()
 foam.CLASS({
   package: 'foam.glang',
   name: 'EndOfMonth',
-  extends: 'foam.mlang.AbstractExpr',
-  implements: [ 'foam.core.Serializable' ],
-  properties: [
-    {
-      class: 'foam.mlang.ExprProperty',
-      name: 'delegate'
-    }
-  ],
+  extends: 'foam.glang.AbstractDateGlang',
   methods: [
     {
       name: 'f',
@@ -141,7 +161,6 @@ foam.CLASS({
         ts.setHours(23, 59, 59);
         ts.setMilliseconds(999);
         return ts;
-        return ts.getTime() > Date.now() ? new Date() : ts;
       },
       javaCode: `
 // Convert to LocalDate
@@ -164,14 +183,7 @@ return java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()
 foam.CLASS({
   package: 'foam.glang',
   name: 'EndOfQuarter',
-  extends: 'foam.mlang.AbstractExpr',
-  implements: [ 'foam.core.Serializable' ],
-  properties: [
-    {
-      class: 'foam.mlang.ExprProperty',
-      name: 'delegate'
-    }
-  ],
+  extends: 'foam.glang.AbstractDateGlang',
   methods: [
     {
       name: 'f',
@@ -187,7 +199,6 @@ foam.CLASS({
         ts.setHours(23, 59, 59);
         ts.setMilliseconds(999);
         return ts;
-        return ts.getTime() > Date.now() ? new Date() : ts;
       },
       javaCode: `
 // Convert to LocalDate
@@ -213,14 +224,7 @@ return java.util.Date.from(localDateTime.atZone(java.time.ZoneId.systemDefault()
 foam.CLASS({
   package: 'foam.glang',
   name: 'EndOfYear',
-  extends: 'foam.mlang.AbstractExpr',
-  implements: [ 'foam.core.Serializable' ],
-  properties: [
-    {
-      class: 'foam.mlang.ExprProperty',
-      name: 'delegate'
-    }
-  ],
+  extends: 'foam.glang.AbstractDateGlang',
   methods: [
     {
       name: 'f',
