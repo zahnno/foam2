@@ -145,7 +145,8 @@ foam.CLASS({
           .start(this.MenuBar, { menuName: this.group ? this.group.rootMenu : '' })
             .addClass('menuBar')
           .end()
-          .tag({ class: 'foam.nanos.u2.navigation.UserView' })
+          .tag({ class: 'foam.nanos.u2.navigation.NotificationMenuItem' })
+          .tag({ class: 'foam.nanos.u2.navigation.UserInfoNavigationView' })
         .end();
     }
   ]

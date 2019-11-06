@@ -6,7 +6,7 @@
 foam.CLASS({
   package: 'foam.nanos.u2.navigation',
   name: 'UserInfoNavigationView',
-  extends: 'foam.u2.View',
+  extends: 'foam.u2.Controller',
 
   documentation: 'Displays user and agent label if present. Clicking view opens settings submenu.',
 
@@ -69,16 +69,18 @@ foam.CLASS({
           })
           .start()
             .add(this.slot((agent, user) => {
-              return this.E().addClass('name-container')
+              this.E().addClass('name-container')
                   .start('span').addClass(this.myClass('userName'))
-                    .add( agent ? user.businessName() : user.label())
+                    .add( agent ? user.businessName() : user.label() )
                   .end();
             }))
             .add(this.slot((agent) => {
               if ( ! agent ) return;
-              return this.E().addClass('name-container')
-                  .start('span').addClass(this.myClass('agentName'))
-                    .add( agent ? agent.label() : '')
+              return this.E()
+                  .addClass('name-container')
+                  .start('span')
+                    .addClass(this.myClass('agentName'))
+                    .add( agent.label() )
                   .end();
             }))
           .end()

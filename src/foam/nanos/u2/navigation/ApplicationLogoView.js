@@ -39,20 +39,26 @@ foam.CLASS({
       this
         .addClass(this.myClass())
         .on('click', this.goToDefault)
-          .start({
-            class: 'foam.u2.tag.Image',
-            data$: this.theme$.dot('logo')
-          })
-            .hide(this.theme$.dot('largeIconEnabled'))
-            .addClass('logo')
+          .start()
+            .start({
+              class: 'foam.u2.tag.Image',
+              data$: this.theme$.dot('logo')
+            })
+              .addClass('logo')
+              .hide(this.theme$.dot('largeLogoEnabled'))
+            .end()
+            .start('span')
+              .addClass('appName')
+              .hide(this.theme$.dot('largeLogoEnabled'))
+              .add(this.theme$.dot('appName'))
+            .end()
           .end()
-          .start('span').addClass('appName').add(this.theme$.dot('appName')).end()
           .start({
             class: 'foam.u2.tag.Image',
             data$: this.theme$.dot('largeLogo')
           })
             .addClass('logo')
-            .show(this.theme$.dot('largeIconEnabled'))
+            .show(this.theme$.dot('largeLogoEnabled'))
           .end();
     }
   ],

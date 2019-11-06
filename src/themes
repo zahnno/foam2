@@ -6,6 +6,8 @@ p({
   "priority": 1,
   "defaultMenu": "admin.nspec",
   "logo": "images/foam_red.png",
+  "largeLogo":"images/foam_red.png",
+  "largeLogoEnabled":true,
   "primary1": "#202341",
   "primary2": "#144794",
   "primary3": "#406dea",

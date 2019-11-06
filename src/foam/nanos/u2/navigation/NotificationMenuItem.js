@@ -17,6 +17,10 @@ foam.CLASS({
     'foam.nanos.notification.Notification'
   ],
 
+  implements: [
+    'foam.mlang.Expressions',
+  ],
+
   imports: [
     'currentMenu',
     'group',
