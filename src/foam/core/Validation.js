@@ -8,6 +8,8 @@ foam.CLASS({
   package: 'foam.core',
   name: 'ValidationPredicate',
 
+  imports: ['auth'],
+
   properties: [
     {
       name: 'predicateFactory'
@@ -31,10 +33,19 @@ foam.CLASS({
       // TODO: it isn't normal for JS functions to have a 'js' prefix
       // TODO: poor choice of name, should be something with 'assert'
       name: 'jsFunc',
-      expression: function(predicate, jsErr) {
+      expression: function(predicate, requiresValidation, jsErr) {
         return function() {
-          if ( ! predicate.f(this) ) return jsErr(this);
+          if ( ! predicate.f(this) && ! requiresValidation ) return jsErr(this);
         };
+      }
+    },
+    'permission',
+    {
+      name: 'requiresValidation',
+      expression: function(permission) {
+        return this.getValidationAuth(permission).then(function(validate) {
+          this.requiresValidation = validate;
+        })
       }
     },
     {
@@ -72,6 +83,12 @@ foam.CLASS({
   ],
 
   methods: [
+    {
+      name: 'getValidationAuth',
+      code:  async function(permission) {
+        return await this.auth.check(this.__subContext__, permission);
+      }
+    },
     function createErrorSlotFor(data) {
       return data.slot(this.jsFunc, this.args);
       /*
@@ -112,7 +129,9 @@ foam.CLASS({
             .flat());
           return [args, function() {
             for ( var i = 0 ; i < validationPredicates.length ; i++ ) {
-              var vp = validationPredicates[i];
+              var vp = validationPredicates[i]
+              vp.__subContext__ = this.__subContext__;
+              vp.permission = `validate.${this.cls_.package}.${this.cls_.name}.${this.cls_.getAxiomByName(name)}`
               var self = this;
               if ( vp.jsFunc.bind(self)() ) return vp.jsErr.bind(self)(self);
             }
