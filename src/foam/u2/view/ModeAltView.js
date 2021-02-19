@@ -49,7 +49,7 @@ foam.CLASS({
     function initArgs(args) {
       this.SUPER.apply(this, arguments);
       if ( args ) {
-        this.args = foam.util.clone(args);
+        this.args = foam.Object.shallowClone(args);
         delete this.args['class'];
         delete this.args['readView'];
         delete this.args['writeView'];
@@ -71,7 +71,7 @@ foam.CLASS({
               self.writeView,
               {
                 ...this.args,
-                focused$: this.focused$,
+                focused$: self.focused$,
                 data$: self.data$,
                 mode: mode
               }).call(callFromProperty);
@@ -80,7 +80,6 @@ foam.CLASS({
               self.readView,
               {
                 ...this.args,
-                focused$: this.focused$,
                 data$: self.data$,
                 mode: mode
               }).call(callFromProperty);

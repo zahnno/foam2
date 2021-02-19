@@ -95,8 +95,8 @@ public class SessionServerBox
         return;
       }
 
-      // test and use non-clustered medusa sessions
-      DAO internalSessionDAO = (DAO) getX().get("internalSessionDAO");
+      // test and use non-clustered sessions
+      DAO internalSessionDAO = (DAO) getX().get("localInternalSessionDAO");
       if ( internalSessionDAO != null ) {
         session = (Session) internalSessionDAO.find(sessionID);
         if ( session != null ) {
@@ -113,7 +113,7 @@ public class SessionServerBox
         session = new Session((X) getX().get(Boot.ROOT));
         session.setId(sessionID == null ? "anonymous" : sessionID);
         if ( req != null ) {
-          session.setRemoteHost(req.getRemoteHost());
+          session.setRemoteHost(foam.net.IPSupport.instance().getRemoteIp(getX()));
         }
         try {
           // set clusterable false so only saved locally until user known.
@@ -133,7 +133,9 @@ public class SessionServerBox
         }
       } else if ( req != null ) {
         // if req == null it means that we're being accessed via webSockets
-        if ( ! session.validRemoteHost(req.getRemoteHost()) ) {
+        try {
+          session.validateRemoteHost(getX());
+        } catch (foam.core.ValidationException e) {
           // If an existing session is reused with a different remote host then
           // delete the session and force a re-login.
           // This is done as a security measure to reduce the likelihood of
@@ -144,7 +146,7 @@ public class SessionServerBox
           // to sign back in when the remote host changes, we reduce the attack
           // surface for session hijacking. Session hijacking is still possible,
           // but only if the user is on the same remote host.
-          logger.warning("Remote host for session ", sessionID, " changed from ", session.getRemoteHost(), " to ", req.getRemoteHost(), ". Deleting session and forcing the user to sign in again.");
+          logger.warning("Remote host for session ", sessionID, " changed from ", session.getRemoteHost(), " to ", foam.net.IPSupport.instance().getRemoteIp(getX()), ". Deleting session and forcing the user to sign in again.");
           sessionDAO.remove(session);
           msg.replyWithException(new AuthenticationException("IP address changed. Your session was deleted to keep your account secure. Please sign in again to verify your identity."));
         }

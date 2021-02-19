@@ -124,10 +124,10 @@ foam.CLASS({
   ],
 
   exports: [
-    'dblclick',
+    'click',
+    'config',
     'filteredTableColumns',
-    'serviceName',
-    'config'
+    'serviceName'
   ],
 
   properties: [
@@ -257,11 +257,11 @@ foam.CLASS({
         this.searchPredicate = foam.mlang.predicate.True.create();
       }));
 
-      this.currentMemento$ = this.memento.tail$;
+      if ( this.memento )
+        this.currentMemento$ = this.memento.tail$;
     },
-    function dblclick(obj, id) {
+    function click(obj, id) {
       if ( ! this.stack ) return;
-
       this.stack.push({
         class: 'foam.comics.v2.DAOSummaryView',
         data: obj,

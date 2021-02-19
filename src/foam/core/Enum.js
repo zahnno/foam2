@@ -224,21 +224,10 @@ foam.CLASS({
 
           v[i] = def;
 
-          // REVIEW: Potential fix for ordinal default ordering
-          // if ( def.hasOwnProperty('ordinal') ) {
-          //   next = Math.max(def.ordinal + 1, next);
-          // } else {
-          //   def.ordinal = next++;
-          // }
-
-          // if ( ! def.hasOwnProperty('priority') )
-          //   def.priority = def.ordinal;
-
-          if ( def.ordinal || def.ordinal === 0 ) {
-            next = def.ordinal + 1;
-          } else {
-            def.ordinal = next++;
+          if ( def.definition.ordinal == undefined ) {
+            def.ordinal = next;
           }
+          next = Math.max(def.ordinal + 1, next);
 
           if ( used[def.ordinal] ) {
             throw this.id +
@@ -349,7 +338,11 @@ foam.CLASS({
     },
     function toSummary() { return this.label; },
     function toStyle() {
-      var style = {};
+      var style = {
+        'display': 'inline-block',
+        'border-radius': '50px',
+        'padding': '4px 12px'
+      };
 
       if ( this.color      ) style.color          = this.color;
       if ( this.background ) style.background     = this.background;

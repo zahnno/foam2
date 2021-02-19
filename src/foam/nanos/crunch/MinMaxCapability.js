@@ -22,6 +22,14 @@ foam.CLASS({
 
   properties: [
     {
+      name: 'of',
+      hidden: true,
+      value: "foam.nanos.crunch.MinMaxCapabilityData",
+      javaFactory:`
+        return foam.nanos.crunch.MinMaxCapabilityData.getOwnClassInfo();
+      `
+    },
+    {
       name: 'min',
       class: 'Int',
       value: 1
@@ -43,6 +51,18 @@ foam.CLASS({
       javaFactory: `
         return new MinMaxCapabilityWizardlet();
       `
+    },
+    {
+      class: 'Object',
+      name: 'wizardlet',
+      documentation: `
+        Defines a wizardlet to display this capability in a wizard. This
+        wizardlet will display after this capability's prerequisites.
+      `,
+      factory: function() {
+        return foam.nanos.crunch.ui.CapabilityWizardlet.create({isVisible: false}, this);
+      },
+      includeInDigest: false,
     },
   ],
 
@@ -114,8 +134,9 @@ foam.CLASS({
         is less than 'min'
       `,
       javaCode: `
-        if ( ! getEnabled() ) return false; 
-        
+        if ( ! getEnabled() ) return false;
+        if ( getGrantMode() == CapabilityGrantMode.MANUAL ) return false;
+
         DAO capabilityDAO = (DAO) x.get("capabilityDAO");
         CrunchService crunchService = (CrunchService) x.get("crunchService");
 
@@ -128,9 +149,13 @@ foam.CLASS({
         int numberGrantedNotReopenable = 0;
         for ( var capId : prereqs ) {
           Capability cap = (Capability) capabilityDAO.find(capId);
+          if ( cap.getGrantMode() == CapabilityGrantMode.MANUAL ) {
+            numberGrantedNotReopenable++;
+            continue;
+          }
           if ( cap == null ) throw new RuntimeException("Cannot find prerequisite capability");
           UserCapabilityJunction prereq = crunchService.getJunction(x, capId);
-          if ( prereq != null && prereq.getStatus() == CapabilityJunctionStatus.GRANTED && ! cap.maybeReopen(x, prereq) )
+          if ( prereq != null && ! cap.maybeReopen(x, prereq) )
             numberGrantedNotReopenable++;
         }
         // if there are at least min number granted not reopenable, then no need to reopen capability
