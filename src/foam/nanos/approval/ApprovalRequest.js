@@ -60,6 +60,7 @@
     'description',
     'classification',
     'objId',
+    'createdFor',
     'approver.legalName',
     'assignedTo.legalName',
     'status',
@@ -849,7 +850,7 @@
                     editPredicate: foam.mlang.predicate.False.create(),
                     createPredicate: foam.mlang.predicate.False.create(),
                     deletePredicate: foam.mlang.predicate.False.create()
-                  }),
+                  }, X),
                   mementoHead: null,
                   backLabel: self.BACK_LABEL
                 });
@@ -881,7 +882,7 @@
                 editPredicate: foam.mlang.predicate.False.create(),
                 createPredicate: foam.mlang.predicate.False.create(),
                 deletePredicate: foam.mlang.predicate.False.create()
-              }),
+              }, X),
               mementoHead: null,
               backLabel: self.BACK_LABEL
             }, X.createSubContext({stack: self.stack}));

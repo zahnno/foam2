@@ -2054,7 +2054,7 @@ foam.CLASS({
         }
         var first = Array.isArray(e) ? e[0] : e;
 
-        if ( first.state == first.INITIAL ) {
+        if ( first && first.state == first.INITIAL ) {
           // updated requested before initial element loaded
           // not a problem, just defer loading
           first.onload.sub(foam.events.oneTime(l));
@@ -2443,6 +2443,24 @@ foam.CLASS({
   ]
 });
 
+foam.CLASS({
+  package: 'foam.u2',
+  name: 'FormattedStringViewRefinement',
+  refines: 'foam.core.FormattedString',
+  requires: [ 'foam.u2.FormattedTextField' ],
+  properties: [
+    {
+      name: 'view',
+      factory: function() {
+        return {
+          class: 'foam.u2.FormattedTextField',
+          formatter: this.formatter,
+          returnFormatted: false
+        };
+      }
+    }
+  ]
+});
 
 foam.CLASS({
   package: 'foam.u2',
